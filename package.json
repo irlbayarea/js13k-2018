@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matanlurey/js13k-2018.git"
+    "url": "git+https://github.com/irlbayarea/js13k-2018.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/matanlurey/js13k-2018/issues"
+    "url": "https://github.com/irlbayarea/js13k-2018/issues"
   },
-  "homepage": "https://github.com/matanlurey/js13k-2018#readme",
+  "homepage": "https://github.com/irlbayarea/js13k-2018#readme",
   "sideEffects": false,
   "devDependencies": {
     "app-root-path": "^2.1.0",
