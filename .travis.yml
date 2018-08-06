@@ -7,6 +7,14 @@ cache:
   directories:
     - ./node_modules/
 
+env:
+  global:
+    - SSH_KEY="id_rsa"
+    - GIT_NAME="Matan Lurey"
+    - GIT_EMAIL="matan@lurey.org"
+    - SOURCE_DIR="dist"
+    - DEPLOY_BRANCH="master"
+
 branches:
   only:
     - master
@@ -18,6 +26,7 @@ jobs:
     - env: "MODE=lint"
 
 before_install:
+  - openssl aes-256-cbc -K $encrypted_ba4233eef822_key -iv $encrypted_ba4233eef822_iv -in deploy_key -out ~\/.ssh/js13k_id_rsa -d
   - source ./script/ci/travis-env.sh
 
 install:
@@ -25,3 +34,6 @@ install:
 
 script:
   - ./script/ci/travis-script.sh
+
+after_success:
+  - ./script/deploy.sh
