@@ -20,12 +20,11 @@ jobs:
   - env: MODE=format
   - env: MODE=lint
 before_install:
-- openssl aes-256-cbc -K $encrypted_ba4233eef822_key -iv $encrypted_ba4233eef822_iv
-  -in script/deploy.key -out id_rsa -d
 - source ./script/ci/travis-env.sh
 install:
 - npm install
 script:
 - "./script/ci/travis-script.sh"
 after_success:
+- openssl aes-256-cbc -K $encrypted_ba4233eef822_key -iv $encrypted_ba4233eef822_iv -in script/deploy.key -out id_rsa -d
 - "./script/deploy.sh"
