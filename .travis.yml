@@ -1,0 +1,27 @@
+language: node_js
+
+node_js:
+  - 'stable'
+
+cache:
+  directories:
+    - ./node_modules/
+
+branches:
+  only:
+    - master
+
+jobs:
+  include:
+    - env: "MODE=build"
+    - env: "MODE=format"
+    - env: "MODE=lint"
+
+before_install:
+  - source ./scripts/ci/travis-env.sh
+
+install:
+  - npm install
+
+script:
+  - ./scripts/ci/travis-script.sh
