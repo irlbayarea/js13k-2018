@@ -18,10 +18,10 @@ jobs:
     - env: "MODE=lint"
 
 before_install:
-  - source ./scripts/ci/travis-env.sh
+  - source ./script/ci/travis-env.sh
 
 install:
   - npm install
 
 script:
-  - ./scripts/ci/travis-script.sh
+  - ./script/ci/travis-script.sh
