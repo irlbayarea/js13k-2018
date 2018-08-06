@@ -26,7 +26,7 @@ jobs:
     - env: "MODE=lint"
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_ba4233eef822_key -iv $encrypted_ba4233eef822_iv -in deploy_key -out ~\/.ssh/js13k_id_rsa -d
+  - openssl aes-256-cbc -K $encrypted_ba4233eef822_key -iv $encrypted_ba4233eef822_iv -in ./script/deploy.key -out id_rsa -d
   - source ./script/ci/travis-env.sh
 
 install:
