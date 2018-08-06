@@ -15,7 +15,7 @@ echo ""
 # Go to project dir
 cd $(dirname $0)/../..
 
-source scripts/ci/sources/mode.sh
+source script/ci/sources/mode.sh
 
 if is_format; then
   npm run format:check

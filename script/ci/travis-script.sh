@@ -15,5 +15,5 @@ set -e
 cd $(dirname $0)/../..
 
 if [[ "${MODE}" ]]; then
-  ./scripts/ci/travis-test.sh
+  ./script/ci/travis-test.sh
 fi
