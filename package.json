@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack --config ./config/webpack.prod.js",
     "clean": "rimraf -- dist",
-    "format": "prettier --config .prettier --write \"src/**/*.ts\" \"config/*/**.js\"",
-    "format:check": "prettier-check --config '.prettier' --list-different \"src/**/*.ts\" \"config/*/**.js\"",
+    "format": "prettier --write \"src/**/*.ts\" \"config/*/**.js\"",
+    "format:check": "prettier-check --list-different \"src/**/*.ts\" \"config/*/**.js\"",
     "lint": "tslint --project .",
     "lint:fix": "tslint --fix --project .",
     "serve": "webpack-dev-server --config ./config/webpack.dev.js"
