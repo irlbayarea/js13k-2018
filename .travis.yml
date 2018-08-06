@@ -1,30 +1,31 @@
 language: node_js
 node_js:
-  - stable
+- stable
 cache:
   directories:
-    - "./node_modules/"
+  - "./node_modules/"
 env:
   global:
-    - SSH_KEY="id_rsa"
-    - GIT_NAME="Matan Lurey"
-    - GIT_EMAIL="matan@lurey.org"
-    - SOURCE_DIR="dist"
-    - DEPLOY_BRANCH="master"
+  - SSH_KEY="id_rsa"
+  - GIT_NAME="Matan Lurey"
+  - GIT_EMAIL="matan@lurey.org"
+  - SOURCE_DIR="dist"
+  - DEPLOY_BRANCH="master"
 branches:
   only:
-    - master
+  - master
 jobs:
   include:
-    - env: MODE=build
-    - env: MODE=format
-    - env: MODE=lint
+  - env: MODE=build
+  - env: MODE=format
+  - env: MODE=lint
 before_install:
-  - openssl aes-256-cbc -K $encrypted_ba4233eef822_key -iv $encrypted_ba4233eef822_iv -in script/deploy.key -out id_rsa -d
-  - source ./script/ci/travis-env.sh
+- openssl aes-256-cbc -K $encrypted_ba4233eef822_key -iv $encrypted_ba4233eef822_iv
+  -in script/deploy.key -out id_rsa -d
+- source ./script/ci/travis-env.sh
 install:
-  - npm install
+- npm install
 script:
-  - "./script/ci/travis-script.sh"
+- "./script/ci/travis-script.sh"
 after_success:
-  - "./script/deploy.sh"
+- "./script/deploy.sh"
