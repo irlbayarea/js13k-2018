@@ -1,9 +1,5 @@
 class DocumentBodyNamer {
-  public name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
+  constructor(public name: string) {}
 }
 
 const namer = new DocumentBodyNamer('Hello World!');

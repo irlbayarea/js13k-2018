@@ -11,7 +11,3 @@ is_format() {
 is_lint() {
   [[ "${MODE}" = "lint" ]]
 }
-
-is_test() {
-  [[ "${MODE}" = "test" ]]
-}

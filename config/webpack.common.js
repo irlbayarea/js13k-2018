@@ -19,10 +19,26 @@ module.exports = {
     extensions: [ '.ts', '.js' ]
   },
   output: {
-    filename: 'main.js',
+    filename: '[name].[hash].js',
     path: path.resolve(root, './dist')
   },
   plugins: [
-    new HtmlWebPackPlugin()
+    new HtmlWebPackPlugin({
+      title: 'JS13K 2018',
+      template: 'src/index.html',
+      minify: {
+        collapseBooleanAttributes: true,
+        collapseInlineTagWhitespace: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeEmptyAttributes: true,
+        removeOptionalTags: true,
+        removeRedundantAttributes: true,
+        sortAttributes: true,
+        sortClassName: true,
+        useShortDoctype: true
+      },
+      showErrors: false
+    })
   ]
 };
