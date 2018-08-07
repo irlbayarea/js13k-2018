@@ -1,8 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 // Used instead of __dirname.
 const root = require('app-root-path') + '';
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 module.exports = {
   entry: './src/index.ts',
@@ -19,7 +22,7 @@ module.exports = {
     extensions: [ '.ts', '.js' ]
   },
   output: {
-    filename: '[name].[hash].js',
+    filename: '[name].[git-revision-hash].js',
     path: path.resolve(root, './dist')
   },
   plugins: [
@@ -39,6 +42,7 @@ module.exports = {
         useShortDoctype: true
       },
       showErrors: false
-    })
+    }),
+    gitRevisionPlugin,
   ]
 };
