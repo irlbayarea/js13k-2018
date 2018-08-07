@@ -27,6 +27,7 @@ script:
 - "./script/ci/travis-script.sh"
 deploy:
   provider: pages
+  local-dir: dist
   skip-cleanup: true
   github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
   on:
