@@ -4,7 +4,7 @@
   "description": "A game",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config ./config/webpack.prod.js",
+    "build": "webpack --config ./config/webpack.prod.js && node ./script/ci/check-size.js",
     "clean": "rimraf -- dist",
     "format": "prettier --write \"src/**/*.ts\" \"config/*/**.js\"",
     "format:check": "prettier-check --list-different \"src/**/*.ts\" \"config/*/**.js\"",

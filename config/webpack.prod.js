@@ -17,8 +17,15 @@ module.exports = merge(common, {
         new TerserPlugin({
             terserOptions: {
                 ecma: 6,
-                mangle: true,
-                module: true
+                compress: {
+                    arguments: true,
+                    hoist_funs: true,
+                    module: true,
+                    toplevel: true
+                },
+                mangle: {
+                    properties: true
+                }
             }
         })
       ]
