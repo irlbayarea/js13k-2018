@@ -8,24 +8,25 @@ module.exports = merge(common, {
   mode: 'production',
   plugins: [
     new ZipPlugin({
-        filename: 'release.zip',
-        pathPrefix: 'dist'
-    })
+      filename: 'release.zip',
+      pathPrefix: 'dist',
+    }),
   ],
   optimization: {
-      minimizer: [
-        new TerserPlugin({
-            terserOptions: {
-                ecma: 6,
-                compress: {
-                    arguments: true,
-                    hoist_funs: true,
-                    module: true,
-                    toplevel: true
-                },
-                mangle: true
-            }
-        })
-      ]
-  }
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            arguments: true,
+            hoist_funs: true,
+            module: true,
+            toplevel: true,
+          },
+          mangle: {
+            properties: {},
+          },
+        },
+      }),
+    ],
+  },
 });
