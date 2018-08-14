@@ -63,4 +63,8 @@ typings/
 # Outputs
 dist/
 
+# VSCode Config Files
 .vscode/
+
+# OS Specific
+.DS_Store
