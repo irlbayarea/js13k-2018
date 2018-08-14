@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 // Used instead of __dirname.
@@ -14,16 +14,16 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: [ '.ts', '.js' ]
+    extensions: ['.ts', '.js'],
   },
   output: {
     filename: '[name].[git-revision-hash].js',
-    path: path.resolve(root, './dist')
+    path: path.resolve(root, './dist'),
   },
   plugins: [
     new HtmlWebPackPlugin({
@@ -39,10 +39,10 @@ module.exports = {
         removeRedundantAttributes: true,
         sortAttributes: true,
         sortClassName: true,
-        useShortDoctype: true
+        useShortDoctype: true,
       },
-      showErrors: false
+      showErrors: false,
     }),
     gitRevisionPlugin,
-  ]
+  ],
 };
