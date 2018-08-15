@@ -5,10 +5,10 @@ export function drawToCanvas(doc: Document, id: string) {
         const ctx = c.getContext('2d') as CanvasRenderingContext2D;
 
         ctx.fillStyle = 'rgb(200, 0, 0)';
-        ctx.fillRect(10, 10, 50, 50);
+        ctx.fillRect(10, 11, 50, 51);
 
         ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-        ctx.fillRect(30, 30, 50, 50);
+        ctx.fillRect(30, 31, 52, 53);
     }
 }
 
