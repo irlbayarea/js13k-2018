@@ -11,7 +11,7 @@
     "format:check": "prettier-check --list-different \"@(src|config|script)/**/*@(js|jsx|ts|json)\" \".prettierrc.json\" \"package.json\"",
     "lint": "tslint --project .",
     "lint:fix": "tslint --fix --project .",
-    "serve": "webpack-dev-server --config ./config/webpack.dev.js",
+    "serve": "webpack-dev-server --config ./config/webpack.dev.js --hot",
     "serve:prod": "npm run build && http-server dist"
   },
   "repository": {
