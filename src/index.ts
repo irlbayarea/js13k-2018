@@ -1,6 +1,5 @@
-class DocumentBodyNamer {
-  constructor(public name: string) {}
-}
+import { drawToCanvas, writeToParagraph } from "./draw"
 
-const namer = new DocumentBodyNamer('Hello World! I"m helping!');
-document.body.innerHTML = namer.name;
+writeToParagraph(document, `HelloWorld`, `Hello there!`);
+drawToCanvas(document, `tutorial`);
+
