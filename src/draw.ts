@@ -51,3 +51,17 @@ export function writeToParagraph(doc: Document, id: string, message: string) {
 
   p.innerHTML = message;
 }
+
+export function writeWordsOnCanvas(doc: Document, id: string, message: string) {
+  const c = doc.getElementById(id) as HTMLCanvasElement;
+
+  if (c.getContext) {
+    const ctx = c.getContext('2d') as CanvasRenderingContext2D;
+    ctx.font = '12px serif';
+    ctx.fillText(
+      message,
+      1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1,
+      1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
+    );
+  }
+}
