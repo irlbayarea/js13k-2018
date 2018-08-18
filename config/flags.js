@@ -11,7 +11,7 @@ const flags = {
   VERSION: '0.1.0',
 };
 
-module.exports = ((flags) => {
+module.exports = (flags => {
   const results = {};
   for (const key of Object.keys(flags)) {
     results[`FLAGS_${key}`] = JSON.stringify(flags[key]);

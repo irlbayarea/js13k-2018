@@ -1,4 +1,4 @@
-import {logDebug} from './common/logger';
+import { logDebug } from './common/logger';
 
 const canvas = document.querySelector('canvas') as HTMLCanvasElement;
 const context = canvas.getContext('2d') as CanvasRenderingContext2D;
