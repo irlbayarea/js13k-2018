@@ -7,6 +7,9 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const root = require('app-root-path') + '';
 const gitRevisionPlugin = new GitRevisionPlugin();
 
+// Load common flags
+const flags = require('./flags');
+
 module.exports = {
   entry: './src/index.ts',
   module: {
@@ -44,5 +47,6 @@ module.exports = {
       showErrors: false,
     }),
     gitRevisionPlugin,
+    new webpack.DefinePlugin(flags),
   ],
 };
