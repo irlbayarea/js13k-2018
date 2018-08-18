@@ -1,18 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta charset="utf8">
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- TODO: Add images/favicon.img: <link rel="icon" href="...">-->
+
+  <!-- See: https://developers.google.com/web/fundamentals/web-app-manifest/ -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- See: https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chrome-39-for-Android -->
+  <meta name="theme-color" content="C8001D">
+
+   <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+   <meta name="mobile-web-app-capable" content="yes">
+   <meta name="application-name" content="JS13K 2018">
+
+   <!-- Add to homescreen for Safari on iOS -->
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+   <meta name="apple-mobile-web-app-title" content="JS13K 2018">
+
+   <!-- TODO: Homescreen icons -->
+   <!--
+   <link rel="apple-touch-icon" href="images/manifest/icon-48x48.png">
+   <link rel="apple-touch-icon" sizes="72x72" href="images/manifest/icon-72x72.png">
+   <link rel="apple-touch-icon" sizes="96x96" href="images/manifest/icon-96x96.png">
+   <link rel="apple-touch-icon" sizes="144x144" href="images/manifest/icon-144x144.png">
+   <link rel="apple-touch-icon" sizes="192x192" href="images/manifest/icon-192x192.png">
+   -->
+
+  <!-- TODO: Tile icon for Windows 8 (144x144 + tile color) -->
+  <!--
+  <meta name="msapplication-TileImage" content="images/manifest/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#C8001D">
+  <meta name="msapplication-tap-highlight" content="no">
+  -->
+
+  <!-- TODO: Default twitter cards -->
+  <!--
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@username">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="my-app">
+  <meta property="og:image" content="images/manifest/icon-144x144.png" />
+  -->
+
+  <!-- Global Styles/Overrides -->
+  <style>
+    body {
+      margin: 0;
+      /* This is a font-stack that tries to use the system-default sans-serifs first */
+      font-family: Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+    }
+    canvas {
+      flex: 1;
+    }
+  </style>
 </head>
 
 <body>
-  <p id="HelloWorld"></p>
-  <canvas id="tutorial" width="150" height="150"></canvas>
-  <canvas id="tutorial2" width="150" height="150"></canvas>
-
+  <canvas></canvas>
 </body>
 
 </html>
