@@ -4,13 +4,13 @@ const puppeteer = require('puppeteer');
 // Used instead of __dirname.
 const root = require('app-root-path') + '';
 
-(async() => {
+(async () => {
   const browser = await puppeteer.launch();
   console.log(`Launched: ${await browser.version()}`);
 
   const page = await browser.newPage();
   let caughtError;
-  page.on('pageerror', (err) => {
+  page.on('pageerror', err => {
     console.warn('Unhandled exception', err, err.stack);
     caughtError = err;
   });

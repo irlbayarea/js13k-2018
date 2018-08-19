@@ -1,19 +1,19 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        
-        "alwaysStrict": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "strictFunctionTypes": true,
-        "strictPropertyInitialization": true,
-        "strictNullChecks": true,
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
 
-        "module": "none",
-        "target": "es6"
-      }
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
+
+    "module": "none",
+    "target": "es6"
+  }
 }
