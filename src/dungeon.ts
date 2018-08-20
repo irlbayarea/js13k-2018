@@ -7,18 +7,18 @@ const maxRoomSize = 15;
  * Generate a dungeon.
  *
  * @param mapSize
- * @param rooms 
+ * @param rooms
  */
 export function generateDungeon(mapSize: number, rooms: number): number[][] {
   const tiles: number[][] = [];
   for (let i = 0; i < mapSize; i++) {
-     const row = new Array<number>(mapSize);
-     row.fill(0);
-     tiles.push(row);
+    const row = new Array<number>(mapSize);
+    row.fill(0);
+    tiles.push(row);
   }
   for (let r = 0; r < rooms; r++) {
-      const room = generateRoom(minRoomSize, maxRoomSize, mapSize);
-      projectRoom(room, tiles, 1)
+    const room = generateRoom(minRoomSize, maxRoomSize, mapSize);
+    projectRoom(room, tiles, 1);
   }
   return tiles;
 }
@@ -45,13 +45,13 @@ function generateRoom(
 /**
  * Projects {room} onto a map of {tiles}, setting {fill} for each tile.
  *
- * @param room 
- * @param tiles 
+ * @param room
+ * @param tiles
  */
 function projectRoom<T>(room: Rectangle, tiles: T[][], fill: T): void {
   for (let row = room.top; row < room.height; row++) {
-      for (let col = room.left; col < room.width; col++) {
-          tiles[row][col] = fill;
-      }
+    for (let col = room.left; col < room.width; col++) {
+      tiles[row][col] = fill;
+    }
   }
 }
