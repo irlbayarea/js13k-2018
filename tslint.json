@@ -23,7 +23,7 @@
     "no-any": true,
     "no-empty-interface": true,
     "no-import-side-effect": true,
-    "no-magic-numbers": true,
+    "no-magic-numbers": [true, -1, 0, 1, 2, 1729, 2147483647],
     "await-promise": true,
     "ban-comma-operator": true,
     "curly": true,
