@@ -15,6 +15,7 @@ const root = require('app-root-path') + '';
     caughtError = err;
   });
   await page.goto(`file:${path.join(root, 'dist', 'index.html')}`);
+  await page.waitFor(3000);
   await browser.close();
 
   if (caughtError) {
