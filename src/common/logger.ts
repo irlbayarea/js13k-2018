@@ -10,6 +10,6 @@
 // tslint:disable-next-line:no-any
 export function logDebug(...args: any[]): void {
   if (!FLAGS_PRODUCTION) {
-    console.log.apply(null, args);
+    console.log(...args);
   }
 }
