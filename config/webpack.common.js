@@ -1,5 +1,6 @@
 const path = require('path');
-const webpack = require('webpack');
+const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
@@ -49,6 +50,7 @@ module.exports = {
       showErrors: false,
     }),
     gitRevisionPlugin,
+    new CopyWebpackPlugin(['src/assets/**/*']),
     new webpack.DefinePlugin(flags),
   ],
 };
