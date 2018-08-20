@@ -52,23 +52,21 @@
 
   <!-- Global Styles/Overrides -->
   <style>
+    body, html {
+      height: 100%;
+      display: grid;
+    }
     body {
+      background: #000;
       margin: 0;
-      /* This is a font-stack that tries to use the system-default sans-serifs first */
-      font-family: Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-      line-height: 1.5;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      display: flex;
     }
     canvas {
-      flex: 1;
+      background: #FFF;
+      margin: auto;
     }
   </style>
 </head>
-
 <body>
   <canvas></canvas>
 </body>
-
 </html>

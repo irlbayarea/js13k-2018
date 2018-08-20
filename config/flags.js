@@ -7,6 +7,10 @@ const PRODUCTION = process.env.NODE_ENV == 'production';
  * See ../src/common/flags.d.ts
  */
 const flags = {
+  DIMENSIONS: {
+    width: 800,
+    height: 600,
+  },
   PRODUCTION: PRODUCTION,
   VERSION: '0.1.0',
 };
