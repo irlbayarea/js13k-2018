@@ -1,4 +1,4 @@
-import { Vec2 } from '../common/vec2';
+import { Vec2 } from '../vec2';
 
 /**
  * The `Draw` class abstracts drawing to the canvas passed to the constructor.
