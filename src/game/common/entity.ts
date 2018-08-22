@@ -15,8 +15,8 @@ export class Entity {
     this.r = defaultWidth;
   }
 
-  public update() {
-    this.p.addBy(this.v);
+  public update(delta: number) {
+    this.p.addBy(Vec2.scale(this.v, delta));
   }
 
   public render() {

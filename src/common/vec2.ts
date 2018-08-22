@@ -6,6 +6,7 @@
  * value.
  *
  * @author Alexander J. Kindel <alexkindel@gmail.com>
+ * @license MIT
  */
 export class Vec2 {
   // --- Static Properties --- //
@@ -68,7 +69,6 @@ export class Vec2 {
   ): Vec2 {
     const nx: number = Math.cos(lineNormalAngle);
     const ny: number = Math.sin(lineNormalAngle);
-    // tslint:disable-next-line:no-magic-numbers
     const d: number = 2 * (v.x * nx + v.y * ny);
     return new Vec2(v.x - d * nx, v.y - d * ny);
   }
@@ -87,6 +87,20 @@ export class Vec2 {
    */
   public static subtract(a: Vec2, b: Vec2): Vec2 {
     return new Vec2(a.x - b.x, a.y - b.y);
+  }
+
+  /**
+   * Returns a new vector that is the result of vector scaling.
+   */
+  public static scale(v: Vec2, s: number): Vec2 {
+    return new Vec2(v.x * s, v.y * s);
+  }
+
+  /*
+   * Returns a new vector with components that have been divided by a scalar.
+   */
+  public static divide(v: Vec2, s: number): Vec2 {
+    return new Vec2(v.x / s, v.y / s);
   }
 
   /**
@@ -149,7 +163,7 @@ export class Vec2 {
   /**
    * Returns a new vector with the given angle and length.
    */
-  public static fromAngleLength(angle: number, length: number): Vec2 {
+  public static createAngleLength(angle: number, length: number): Vec2 {
     return new Vec2(Math.cos(angle) * length, Math.sin(angle) * length);
   }
 
@@ -164,7 +178,6 @@ export class Vec2 {
    * Returns a new unit vector with a random angle.
    */
   public static createRandomUnit(): Vec2 {
-    // tslint:disable-next-line:no-magic-numbers
     const angle: number = Math.random() * Math.PI * 2;
     return Vec2.createUnit(angle);
   }
@@ -179,7 +192,7 @@ export class Vec2 {
    *                   the first vector argument, a value of 1 returns the second.
    */
   public static lerp(v1: Vec2, v2: Vec2, a: number): Vec2 {
-    return new Vec2(a * v2.x + (1 - a) * v1.x, a * v2.x + (1 - a) * v1.x);
+    return new Vec2(a * v2.x + (1 - a) * v1.x, a * v2.y + (1 - a) * v1.y);
   }
 
   /**
