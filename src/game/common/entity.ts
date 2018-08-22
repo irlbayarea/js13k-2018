@@ -1,7 +1,7 @@
 import { Vec2 } from '../../common/vec2';
 import { state } from '../../index';
 
-const defaultWidth = 100;
+const defaultRadius = 20;
 
 // An entity in the world.
 export class Entity {
@@ -12,7 +12,7 @@ export class Entity {
   constructor(p: Vec2, v: Vec2 = Vec2.zero()) {
     this.p = p;
     this.v = v;
-    this.r = defaultWidth;
+    this.r = defaultRadius;
   }
 
   public update(delta: number) {
