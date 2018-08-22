@@ -16,7 +16,8 @@ function renderFrames(time: number): void {
   state.draw.context.textAlign = 'center';
   state.draw.text(`Hello There! ${Math.round(time)}`, state.draw.getCenter());
 
-  state.world.update(time);
+  const millisInSecond = 1000;
+  state.world.update(time / millisInSecond);
   state.world.render();
 
   window.requestAnimationFrame(renderFrames);

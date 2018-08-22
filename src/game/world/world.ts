@@ -11,12 +11,12 @@ export class World {
     this.entities = [];
     // TODO: disable this when the magic has been lost.
     // tslint:disable-next-line:no-magic-numbers
-    this.player = new Entity(new Vec2(200, 200), new Vec2(0.01, 0.01));
+    this.player = new Entity(new Vec2(200, 200), new Vec2(20, 10));
     this.entities.push(this.player);
     this.prevTime = Infinity; // Set so that we don't update on first frame.
   }
 
-  // Update this World's state given the game's current timestamp in milliseconds.
+  // Update this World's state given the game's current timestamp in seconds.
   public update = (time: number) => {
     if (this.prevTime === Infinity) {
       this.prevTime = time;
