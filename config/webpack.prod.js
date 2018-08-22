@@ -32,7 +32,7 @@ module.exports = env => merge(common, {
             toplevel: true,
           },
           output: {
-            beautify: env.beautify,
+            beautify: env && env.beautify,
             comments: false,
           },
         },
