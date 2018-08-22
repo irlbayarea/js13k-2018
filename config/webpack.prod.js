@@ -22,6 +22,7 @@ module.exports = env => merge(common, {
             arguments: true,
             hoist_funs: true,
             keep_fargs: false,
+            module: true,
             passes: 10,
             pure_getters: true,
             toplevel: true,
