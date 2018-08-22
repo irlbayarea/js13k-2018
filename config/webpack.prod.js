@@ -1,10 +1,11 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
 
-module.exports = merge(common, {
+module.exports = env => merge(common, {
   mode: 'production',
   plugins: [
     new ZipPlugin({
@@ -16,13 +17,23 @@ module.exports = merge(common, {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
+          ecma: 6,
           compress: {
             arguments: true,
             hoist_funs: true,
-            module: true,
+            keep_fargs: false,
+            passes: 10,
+            pure_getters: true,
+            toplevel: true,
+            unsafe: true,
+          },
+          mangle: {
             toplevel: true,
           },
-          mangle: true,
+          output: {
+            beautify: env.beautify,
+            comments: false,
+          },
         },
       }),
     ],

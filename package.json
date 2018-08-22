@@ -4,7 +4,8 @@
   "description": "A game",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && NODE_ENV=production webpack --config ./config/webpack.prod.js && node ./script/ci/check-size.js",
+    "build": "NODE_ENV=production webpack --config ./config/webpack.prod.js && node ./script/ci/check-size.js",
+    "build:pretty": "NODE_ENV=production webpack --env.beautify=true --config ./config/webpack.prod.js",
     "clean": "rimraf -- dist",
     "deploy": "./script/deploy.sh",
     "format": "prettier --config .prettierrc.json --write \"{,!(node_modules|dist)/**/}{,!(package-lock)}.{js,json,jsx,ts}\"",
@@ -28,6 +29,7 @@
   "sideEffects": false,
   "devDependencies": {
     "app-root-path": "^2.1.0",
+    "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "git-revision-webpack-plugin": "^3.0.3",
     "html-webpack-plugin": "^3.2.0",
