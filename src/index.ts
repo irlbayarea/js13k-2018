@@ -5,14 +5,14 @@ import { World } from './game/world/world';
 // Defines application / game driver state. This is exported as a single
 // object, `state` to be consumed throughout the game.
 class State {
-  public readonly draw: Draw = new Draw(document.querySelector(
+  public readonly draw = new Draw(document.querySelector(
     'canvas'
   ) as HTMLCanvasElement);
-  public readonly input: Input = new Input();
+  public readonly input = new Input();
 }
 
 // Function that is called each frame.
-function renderFrames(time: number): void {
+function renderFrames(time: number) {
   state.draw.clear();
   state.input.processEvents();
 
@@ -28,8 +28,8 @@ function renderFrames(time: number): void {
 }
 
 // Set up application state.
-export const state: State = new State();
-const world: World = new World();
+export const state = new State();
+const world = new World();
 
 // Start the game driver.
 window.requestAnimationFrame(renderFrames);

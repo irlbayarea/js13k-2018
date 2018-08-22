@@ -5,22 +5,22 @@ const defaultRadius = 20;
 
 // An entity in the world.
 export class Entity {
-  public readonly p: Vec2; // Position
-  public readonly v: Vec2; // Velocity
-  public readonly r: number; // Radius
+  public readonly position: Vec2;
+  public readonly velocity: Vec2;
+  public readonly radius: number;
 
-  constructor(p: Vec2, v: Vec2 = Vec2.zero()) {
-    this.p = p;
-    this.v = v;
-    this.r = defaultRadius;
+  constructor(position: Vec2, velocity: Vec2 = Vec2.zero()) {
+    this.position = position;
+    this.velocity = velocity;
+    this.radius = defaultRadius;
   }
 
   public update(delta: number) {
-    this.p.addBy(Vec2.scale(this.v, delta));
+    this.position.addBy(Vec2.scale(this.velocity, delta));
   }
 
   public render() {
-    state.draw.circle(this.p, this.r);
+    state.draw.circle(this.position, this.radius);
     state.draw.context.fillStyle = 'red';
     state.draw.context.fill();
   }

@@ -8,7 +8,7 @@
  *
  * Example keys are:
  *   A, B, C, ...
- *   META (), SHIFT, CONTROL, ALT, ' ' (Spacebar)
+ *   META (Mac Command Key), SHIFT, CONTROL, ALT, ' ' (Spacebar)
  */
 export class Input {
   private readonly pressedKeys: Set<string>;
@@ -55,10 +55,7 @@ export class Input {
 }
 
 class InputEvent {
-  public readonly key: string;
-  public readonly down: boolean;
-
-  constructor(key: string, down: boolean) {
+  constructor(public readonly key: string, public readonly down: boolean) {
     this.key = key;
     this.down = down;
   }

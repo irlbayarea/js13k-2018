@@ -48,7 +48,7 @@ function generateRoom(
  * @param room
  * @param tiles
  */
-function projectRoom<T>(room: Rectangle, tiles: T[][], fill: T): void {
+function projectRoom<T>(room: Rectangle, tiles: T[][], fill: T) {
   for (let row = room.top; row < room.height; row++) {
     for (let col = room.left; col < room.width; col++) {
       tiles[row][col] = fill;
