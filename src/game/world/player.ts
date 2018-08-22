@@ -1,4 +1,5 @@
 import { Vec2 } from '../../common/vec2';
+import { state } from '../../index';
 import { Entity } from '../common/entity';
 
 export class Player {
@@ -13,5 +14,19 @@ export class Player {
   public update() {
     // TODO: Handle input here.
     this.entity.p.x = this.entity.p.x;
+    const speed = 150;
+    this.entity.v.set(new Vec2(0, 0));
+    if (state.input.isPressed('A')) {
+      this.entity.v.x = -speed;
+    }
+    if (state.input.isPressed('D')) {
+      this.entity.v.x = speed;
+    }
+    if (state.input.isPressed('W')) {
+      this.entity.v.y = -speed;
+    }
+    if (state.input.isPressed('S')) {
+      this.entity.v.y = speed;
+    }
   }
 }
