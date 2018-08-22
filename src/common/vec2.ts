@@ -284,7 +284,7 @@ export class Vec2 {
   /**
    * Sets this vector equal to another, overwriting this vector.
    */
-  public set(v: Vec2): void {
+  public set(v: Vec2) {
     this.x = v.x;
     this.y = v.y;
   }
@@ -292,7 +292,7 @@ export class Vec2 {
   /**
    * Sets this vector equal to another given by angle and length, overwriting this vector.
    */
-  public setAngleLength(angle: number, length: number): void {
+  public setAngleLength(angle: number, length: number) {
     this.x = Math.cos(angle) * length;
     this.y = Math.sin(angle) * length;
   }
@@ -300,7 +300,7 @@ export class Vec2 {
   /**
    * Sets this vector to a unit vector given by angle, overwriting this vector.
    */
-  public setUnit(angle: number): void {
+  public setUnit(angle: number) {
     this.x = Math.cos(angle);
     this.y = Math.sin(angle);
   }
@@ -310,7 +310,7 @@ export class Vec2 {
   /**
    * Adds to this vector by the given vector.
    */
-  public addBy(v: Vec2): void {
+  public addBy(v: Vec2) {
     this.x += v.x;
     this.y += v.y;
   }
@@ -318,7 +318,7 @@ export class Vec2 {
   /**
    * Subtracts from this vector by the given vector.
    */
-  public subtractBy(v: Vec2): void {
+  public subtractBy(v: Vec2) {
     this.x -= v.x;
     this.y -= v.y;
   }
@@ -326,7 +326,7 @@ export class Vec2 {
   /**
    * Scales (multiply) the length of this number by the given value.
    */
-  public scaleBy(s: number): void {
+  public scaleBy(s: number) {
     this.x *= s;
     this.y *= s;
   }
@@ -334,7 +334,7 @@ export class Vec2 {
   /**
    * Divides the length of this vector by the given value.
    */
-  public divideBy(s: number): void {
+  public divideBy(s: number) {
     this.x /= s;
     this.y /= s;
   }
@@ -342,7 +342,7 @@ export class Vec2 {
   /**
    * Negates (reverses) this vector.
    */
-  public negate(): void {
+  public negate() {
     this.x = -this.x;
     this.y = -this.y;
   }
@@ -350,7 +350,7 @@ export class Vec2 {
   /**
    * Normalizes this vector.
    */
-  public normalize(): void {
+  public normalize() {
     const length = this.length();
     this.divideBy(length);
   }
@@ -359,7 +359,7 @@ export class Vec2 {
    * Rotates this vector by the given angle in radians. Values between 0 and 2pi rotate clockwise
    * by that amount.
    */
-  public rotateBy(angle: number): void {
+  public rotateBy(angle: number) {
     const c: number = Math.cos(angle);
     const s: number = Math.sin(angle);
 
@@ -371,7 +371,7 @@ export class Vec2 {
   /**
    * Rotates this vector clockwise by 90 degrees (if +y is up and +x is right).
    */
-  public rotateClockwise90(): void {
+  public rotateClockwise90() {
     const temp: number = this.x;
     this.x = this.y;
     this.y = -temp;
@@ -380,7 +380,7 @@ export class Vec2 {
   /**
    * Rotates this vector counterclockwise by 90 degrees (if +y is up and +x is right).
    */
-  public rotateCounterclockwise90(): void {
+  public rotateCounterclockwise90() {
     const temp: number = this.x;
     this.x = -this.y;
     this.y = temp;
@@ -389,7 +389,7 @@ export class Vec2 {
   /**
    * Extends the length of this vector by the argument.
    */
-  public extend(length: number): void {
+  public extend(length: number) {
     const a: number = length / this.length();
     this.x += this.x * a;
     this.y += this.y * a;
@@ -398,7 +398,7 @@ export class Vec2 {
   /**
    * Sets the angle of this vector, preserving length.
    */
-  public setAngle(angle: number): void {
+  public setAngle(angle: number) {
     const length = this.length();
     this.x = length * Math.cos(angle);
     this.y = length * Math.cos(angle);
@@ -407,7 +407,7 @@ export class Vec2 {
   /**
    * Sets the length of this vector, preserving angle.
    */
-  public setLength(length: number): void {
+  public setLength(length: number) {
     const a: number = length / this.length();
     this.x *= a;
     this.y *= a;
