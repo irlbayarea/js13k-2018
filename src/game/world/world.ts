@@ -1,18 +1,16 @@
-import { Vec2 } from '../../common/vec2';
 import { Entity } from '../common/entity';
+import { Player } from './player';
 
 // The game world.
 export class World {
   public readonly entities: Entity[];
-  public readonly player: Entity;
+  public readonly player: Player;
   private prevTime: number;
 
   constructor() {
     this.entities = [];
-    // TODO: disable this when the magic has been lost.
-    // tslint:disable-next-line:no-magic-numbers
-    this.player = new Entity(new Vec2(200, 200), new Vec2(20, 10));
-    this.entities.push(this.player);
+    this.player = new Player();
+    this.entities.push(this.player.entity);
     this.prevTime = Infinity; // Set so that we don't update on first frame.
   }
 

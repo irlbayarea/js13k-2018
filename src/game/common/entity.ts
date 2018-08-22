@@ -5,9 +5,9 @@ const defaultWidth = 100;
 
 // An entity in the world.
 export class Entity {
-  public readonly p: Vec2;
-  public readonly v: Vec2;
-  public readonly r: number;
+  public readonly p: Vec2; // Position
+  public readonly v: Vec2; // Velocity
+  public readonly r: number; // Radius
 
   constructor(p: Vec2, v: Vec2 = Vec2.zero()) {
     this.p = p;
