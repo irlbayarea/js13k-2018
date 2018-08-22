@@ -8,25 +8,34 @@ export class Player {
   constructor() {
     // TODO: disable this when the magic has been lost.
     // tslint:disable-next-line:no-magic-numbers
-    this.entity = new Entity(new Vec2(200, 200), new Vec2(20, 10));
+    this.entity = new Entity(new Vec2(200, 200), new Vec2(0, 0));
   }
 
   public update() {
-    // TODO: Handle input here.
-    this.entity.p.x = this.entity.p.x;
-    const speed = 150;
-    this.entity.v.set(new Vec2(0, 0));
+    this.controls();
+  }
+
+  private controls() {
+    // The new velocity is based on user input.
+    const v = new Vec2(0, 0);
     if (state.input.isPressed('A')) {
-      this.entity.v.x = -speed;
+      v.x -= 1;
     }
     if (state.input.isPressed('D')) {
-      this.entity.v.x = speed;
+      v.x += 1;
     }
     if (state.input.isPressed('W')) {
-      this.entity.v.y = -speed;
+      v.y -= 1;
     }
     if (state.input.isPressed('S')) {
-      this.entity.v.y = speed;
+      v.y += 1;
     }
+    // So player can't move diagonal faster than up and down
+    if (v.lengthSquared() > 1) {
+      v.normalize();
+    }
+    const speed = 250;
+    v.scaleBy(speed);
+    this.entity.v.set(v);
   }
 }
