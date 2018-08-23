@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
@@ -30,6 +31,7 @@ module.exports = {
     path: path.resolve(root, './dist'),
   },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebPackPlugin({
       title: 'JS13K 2018',
       template: 'src/index.html',
