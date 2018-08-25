@@ -1,17 +1,19 @@
-import { Entity } from '../common/entity';
+import { Camera } from '../../common/graphics/camera';
+import { Entity } from './entity';
 import { Player } from './player';
 
 // The game world.
 export class World {
-  public readonly entities: Entity[];
-  public readonly player: Player;
-  private prevTime: number;
+  private readonly entities: Entity[];
+  private readonly player: Player;
+  private readonly camera: Camera;
+  private prevTime = Infinity; // Set Infinity to designate first tick.
 
   constructor() {
     this.entities = [];
     this.player = new Player();
+    this.camera = new Camera();
     this.entities.push(this.player.entity);
-    this.prevTime = Infinity; // Set so that we don't update on first tick.
   }
 
   // Update this World's state given the game's current timestamp in seconds.
@@ -25,18 +27,19 @@ export class World {
     const delta = time - this.prevTime;
 
     // Perform updates.
-    this.entities.forEach(e => {
-      e.update(delta);
-    });
     this.player.update();
+    this.entities.forEach(entity => {
+      entity.update(delta);
+    });
 
     // So we know how much time has ellapsed between ticks.
     this.prevTime = time;
   };
 
   public render = () => {
-    this.entities.forEach(e => {
-      e.render();
+    this.camera.apply();
+    this.entities.forEach(entity => {
+      entity.render();
     });
   };
 }

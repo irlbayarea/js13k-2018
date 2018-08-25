@@ -1,9 +1,10 @@
-import { Vec2 } from '../vec2';
+import { Vec2 } from '../math/vec2';
 
 /**
  * The `Draw` class abstracts drawing to the canvas passed to the constructor.
  *
- * The caller still needs to set color and other properties using `fillStyle` etc.
+ * The caller still needs to set color and other properties using `fillStyle`
+ * etc.
  */
 export class Draw {
   public readonly canvas: HTMLCanvasElement;
@@ -24,12 +25,8 @@ export class Draw {
   };
 
   // Return a Vec2 at the center of the canvas.
-  public getCenter = () => {
-    const seventeen = 2;
-    return new Vec2(
-      this.canvas.width / seventeen,
-      this.canvas.height / seventeen
-    );
+  public getCanvasCenter = () => {
+    return new Vec2(this.canvas.width / 2, this.canvas.height / 2);
   };
 
   // Render a circle with center position and radius.
@@ -42,7 +39,8 @@ export class Draw {
     this.context.ellipse(p.x, p.y, rx, ry, 0, 0, 2 * Math.PI);
   };
 
-  // Render a rectangle with upper left corner at the given position, width and height.
+  // Render a rectangle with upper left corner at the given position, width and
+  // height.
   public readonly rect = (p: Vec2, w: number, h: number) => {
     this.context.rect(p.x, p.y, w, h);
   };
