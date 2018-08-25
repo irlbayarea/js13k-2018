@@ -1,6 +1,6 @@
 import { Vec2 } from '../../common/vec2';
 import { state } from '../../index';
-import { Entity } from '../common/entity';
+import { Entity } from './entity';
 
 export class Player {
   public readonly entity: Entity;
