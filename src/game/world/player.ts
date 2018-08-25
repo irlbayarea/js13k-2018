@@ -18,16 +18,18 @@ export class Player {
   private controls() {
     // The new velocity is based on user input.
     const newVelocity = Vec2.zero();
-    if (state.input.isPressed('A')) {
+    const { isPressed } = state.input;
+    // const { isPressed } = state.input;
+    if (isPressed('A')) {
       newVelocity.x -= 1;
     }
-    if (state.input.isPressed('D')) {
+    if (isPressed('D')) {
       newVelocity.x += 1;
     }
-    if (state.input.isPressed('W')) {
+    if (isPressed('W')) {
       newVelocity.y -= 1;
     }
-    if (state.input.isPressed('S')) {
+    if (isPressed('S')) {
       newVelocity.y += 1;
     }
     // So player can't move diagonal faster than up and down

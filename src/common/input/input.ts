@@ -26,32 +26,31 @@ export class Input {
   }
 
   // Processes input events. Call once before each application frame.
-  public processEvents() {
+  public readonly processEvents = () => {
     this.eventBuffer.forEach(e => {
       this.processEvent(e);
     });
     this.eventBuffer = [];
-  }
+  };
 
   // Takes one or more key strings and returns true if all the input keys
   // matching those key strings are pressed. E.g. `isPressed('A')` returns true
   // if the "A" key is pressed, and `isPressed('CONTROL', A')` returns true if
   // both "CONTROL" and "A" are pressed.
-  public isPressed(...keys: string[]): boolean {
-    return keys.every(key => this.pressedKeys.has(key));
-  }
+  public readonly isPressed = (...keys: string[]): boolean =>
+    keys.every(key => this.pressedKeys.has(key));
 
-  private processEvent(inputEvent: InputEvent) {
+  private readonly processEvent = (inputEvent: InputEvent) => {
     if (inputEvent.down) {
       this.pressedKeys.add(inputEvent.key);
     } else {
       this.pressedKeys.delete(inputEvent.key);
     }
-  }
+  };
 
-  private onKeyEvent(inputEvent: InputEvent) {
+  private readonly onKeyEvent = (inputEvent: InputEvent) => {
     this.eventBuffer.push(inputEvent);
-  }
+  };
 }
 
 class InputEvent {
