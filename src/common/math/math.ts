@@ -1,9 +1,4 @@
-/**
- * Repressents a 2-dimensional point.
- */
-export class Point {
-  constructor(public readonly x: number, public readonly y: number) {}
-}
+import { Vec2 } from './vec2';
 
 /**
  * Representing two-dimensional rectangles whose properties are immutable.
@@ -35,20 +30,20 @@ export class Rectangle {
     return this.top + this.height;
   }
 
-  public get bottomLeft(): Point {
-    return new Point(this.left, this.bottom);
+  public get bottomLeft(): Vec2 {
+    return new Vec2(this.left, this.bottom);
   }
 
-  public get bottomRight(): Point {
-    return new Point(this.right, this.bottom);
+  public get bottomRight(): Vec2 {
+    return new Vec2(this.right, this.bottom);
   }
 
-  public get topLeft(): Point {
-    return new Point(this.left, this.top);
+  public get topLeft(): Vec2 {
+    return new Vec2(this.left, this.top);
   }
 
-  public get topRight(): Point {
-    return new Point(this.right, this.top);
+  public get topRight(): Vec2 {
+    return new Vec2(this.right, this.top);
   }
 
   /**

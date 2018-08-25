@@ -1,4 +1,4 @@
-import { Vec2 } from '../../common/vec2';
+import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
 
 const defaultRadius = 20;

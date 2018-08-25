@@ -1,5 +1,5 @@
 import { state } from '../../index';
-import { Vec2 } from '../vec2';
+import { Vec2 } from '../math/vec2';
 
 export class Camera {
   public static readonly defaultPositionSupplier = Vec2.zero;
