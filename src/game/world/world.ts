@@ -22,8 +22,14 @@ export class World {
   // Initialze world level state e.g. enemies and environment.
   public initializeLevel() {
     // TODO: Move to proper level loader / level config.
-    // tslint:disable:no-magic-numbers
+    // tslint:disable-next-line:no-magic-numbers
     this.entities.push(new Entity(new Vec2(300, 400), Vec2.zero()));
+    // tslint:disable-next-line:no-magic-numbers
+    this.entities.push(new Entity(new Vec2(360, 460), Vec2.zero()));
+    // tslint:disable-next-line:no-magic-numbers
+    this.entities.push(new Entity(new Vec2(100, 250), Vec2.zero()));
+    // tslint:disable-next-line:no-magic-numbers
+    this.entities.push(new Entity(new Vec2(500, 150), Vec2.zero()));
   }
 
   // Update this World's state given the game's current timestamp in seconds.
@@ -63,6 +69,14 @@ export class World {
     }
     if (isPressed('-')) {
       this.camera.zoom(false);
+    }
+    if (isPressed(']')) {
+      // tslint:disable-next-line:no-magic-numbers
+      this.camera.rotation -= Math.PI / 100;
+    }
+    if (isPressed('[')) {
+      // tslint:disable-next-line:no-magic-numbers
+      this.camera.rotation += Math.PI / 100;
     }
   }
 }
