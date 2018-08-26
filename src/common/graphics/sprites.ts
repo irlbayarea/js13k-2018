@@ -29,12 +29,20 @@ export class Sprite {
  * more adjacent cells.
  */
 export class SpriteSheet {
+  private isLoaded = false;
+  private readonly image: HTMLImageElement;
+
   /**
    * @param image
    * @param cellWidth
    * @param cellHeight
    */
-  constructor(private readonly image: ImageBitmap) {}
+  constructor(imageUri: string) {
+    this.image = new Image();
+    this.image.onload = () => (this.isLoaded = true);
+    this.image.src = imageUri;
+    // console.log(image);
+  }
 
   /**
    * Renders an arbitrary region of this sprite sheet to an arbitrary target
@@ -45,6 +53,10 @@ export class SpriteSheet {
    *               sheet.
    */
   public render(targetRect: Rectangle, sourceRect: Rectangle) {
+    if (!this.isLoaded) {
+      return;
+    }
+
     state.draw.context.drawImage(
       this.image,
       sourceRect.left,
