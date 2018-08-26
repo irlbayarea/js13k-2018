@@ -1,5 +1,6 @@
 import { AudioHandler } from '../../common/audio/audio';
 import { Camera } from '../../common/graphics/camera';
+import { CircleDrawable } from '../../common/graphics/drawable';
 import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
 import { Entity } from './entity';
@@ -67,14 +68,13 @@ export class World {
    */
   public initializeLevel() {
     // TODO: Move to proper level loader / level config.
-    // tslint:disable-next-line:no-magic-numbers
-    this.entities.push(new Entity(new Vec2(300, 400), Vec2.zero()));
-    // tslint:disable-next-line:no-magic-numbers
-    this.entities.push(new Entity(new Vec2(360, 460), Vec2.zero()));
-    // tslint:disable-next-line:no-magic-numbers
-    this.entities.push(new Entity(new Vec2(100, 250), Vec2.zero()));
-    // tslint:disable-next-line:no-magic-numbers
-    this.entities.push(new Entity(new Vec2(500, 150), Vec2.zero()));
+    // tslint:disable:no-magic-numbers
+    const randoEntityMaker = (position: Vec2) =>
+      new Entity(position, Vec2.zero(), new CircleDrawable(10, 'red'));
+    this.entities.push(randoEntityMaker(new Vec2(300, 400)));
+    this.entities.push(randoEntityMaker(new Vec2(360, 460)));
+    this.entities.push(randoEntityMaker(new Vec2(100, 250)));
+    this.entities.push(randoEntityMaker(new Vec2(500, 150)));
   }
 
   /**
