@@ -1,3 +1,4 @@
+import { CircleDrawable } from '../../common/graphics/drawable';
 import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
 import { Entity } from './entity';
@@ -7,8 +8,14 @@ export class Player {
 
   constructor() {
     // TODO: disable this when the magic has been lost.
-    // tslint:disable-next-line:no-magic-numbers
-    this.entity = new Entity(new Vec2(200, 200), Vec2.zero());
+    const playerRadius = 20;
+    // tslint:disable:no-magic-numbers
+    const playerStartPosition = new Vec2(200, 200);
+    this.entity = new Entity(
+      playerStartPosition,
+      Vec2.zero(),
+      new CircleDrawable(playerRadius, 'blue')
+    );
   }
 
   public update() {

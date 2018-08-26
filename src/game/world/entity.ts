@@ -1,19 +1,19 @@
+import { IDrawable } from '../../common/graphics/drawable';
 import { Vec2 } from '../../common/math/vec2';
-import { state } from '../../index';
 import { World } from './world';
-
-const defaultRadius = 20;
 
 // An entity in the world.
 export class Entity {
   public readonly position: Vec2;
   public readonly velocity: Vec2;
-  public readonly radius: number;
 
-  constructor(position: Vec2, velocity: Vec2 = Vec2.zero()) {
-    this.position = position;
-    this.velocity = velocity;
-    this.radius = defaultRadius;
+  constructor(
+    position: Vec2,
+    velocity: Vec2,
+    public readonly drawable: IDrawable
+  ) {
+    this.position = position.copy();
+    this.velocity = velocity.copy();
   }
 
   public update() {
@@ -21,6 +21,6 @@ export class Entity {
   }
 
   public render() {
-    state.draw.circle(this.position, this.radius);
+    this.drawable.render(this.position);
   }
 }
