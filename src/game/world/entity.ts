@@ -21,7 +21,5 @@ export class Entity {
 
   public render() {
     state.draw.circle(this.position, this.radius);
-    state.draw.context.fillStyle = 'red';
-    state.draw.context.fill();
   }
 }

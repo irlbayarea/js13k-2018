@@ -36,7 +36,10 @@ export class Draw {
 
   // Render an ellipse given the center position, x radius, and y radius.
   public readonly ellipse = (p: Vec2, rx: number, ry: number) => {
+    this.context.beginPath();
     this.context.ellipse(p.x, p.y, rx, ry, 0, 0, 2 * Math.PI);
+    this.context.fillStyle = 'red';
+    this.context.fill();
   };
 
   // Render a rectangle with upper left corner at the given position, width and
