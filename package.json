@@ -4,7 +4,7 @@
   "description": "A game",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=production webpack --config ./config/webpack.prod.js && node ./script/ci/check-size.js",
+    "build": "webpack --config ./config/webpack.prod.js && node ./script/ci/check-size.js",
     "build:pretty": "NODE_ENV=production webpack --env.beautify=true --config ./config/webpack.prod.js",
     "clean": "rimraf -- dist",
     "deploy": "./script/deploy.sh",
