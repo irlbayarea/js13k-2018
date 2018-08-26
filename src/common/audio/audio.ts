@@ -18,7 +18,7 @@ export class AudioHandler {
 
   // tslint:disable:no-magic-numbers
   constructor() {
-    this.on.type = 'triangle';
+    this.on.type = 'sawtooth';
     this.on.frequency.value = 440;
     this.on.start();
 
