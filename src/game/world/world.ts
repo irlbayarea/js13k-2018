@@ -1,3 +1,4 @@
+import { MusicPlayer } from '../../common/audio/midi';
 import { Camera } from '../../common/graphics/camera';
 import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
@@ -9,12 +10,14 @@ export class World {
   private readonly entities: Entity[];
   private readonly player: Player;
   private readonly camera: Camera;
+  private readonly musicPlayer: MusicPlayer;
   private prevTime = Infinity; // Set Infinity to designate first tick.
 
   public constructor() {
     this.entities = [];
     this.player = new Player();
     this.camera = new Camera();
+    this.musicPlayer = new MusicPlayer();
     this.entities.push(this.player.entity);
     this.initializeLevel();
   }
@@ -44,6 +47,7 @@ export class World {
     this.handleCameraInput();
 
     // Perform updates.
+    this.musicPlayer.update();
     this.player.update();
     this.entities.forEach(entity => {
       entity.update(delta);

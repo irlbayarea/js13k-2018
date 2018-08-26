@@ -8,7 +8,8 @@
  *
  * Example keys are:
  *   A, B, C, ...
- *   META (Mac Command Key), SHIFT, CONTROL, ALT, ' ' (Spacebar)
+ *   META (Windows/Apple Command Key), SHIFT, CONTROL, ALT, ' ' (Spacebar),
+ *   ARROWUP, ARROWDOWN, ARROWLEFT, ARROWRIGHT, ENTER, ESCAPE
  */
 export class Input {
   private readonly pressedKeys: Set<string>;
