@@ -1,10 +1,8 @@
-import { logDebug } from '../logger';
-
 // tslint:disable:no-magic-numbers
 export function noteToFreq(note: string, octave: number): number {
   let m: number;
 
-  logDebug(`note value is ${note} ${octave}`);
+  // logDebug(`note value is ${note} ${octave}`);
 
   switch (note) {
     case 'Cb': {
@@ -97,7 +95,7 @@ export function noteToFreq(note: string, octave: number): number {
     } // A4
   }
 
-  logDebug(`m value is ${m}`);
+  // logDebug(`m value is ${m}`);
 
   return Math.pow(2, (m + -69) / 12 + (octave - 4)) * 440;
 } // tslint:enable:no-magic-numbers
