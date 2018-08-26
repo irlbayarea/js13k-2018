@@ -1,7 +1,9 @@
 import { state } from '../../index';
+import { logDebug } from '../logger';
+import { noteToFreq } from './song';
 // import { logDebug } from '../logger';
 
-export class MusicPlayer {
+export class AudioHandler {
   private readonly ac: AudioContext = new AudioContext();
   private readonly on: OscillatorNode = this.ac.createOscillator();
   private readonly an: AnalyserNode = this.ac.createAnalyser();
@@ -10,6 +12,9 @@ export class MusicPlayer {
   private readonly gn: GainNode = this.ac.createGain();
   private readonly ad: AudioDestinationNode = this.ac.destination;
   private musicIsOn: boolean = false;
+
+  private note: string = 'A';
+  private octv: number = 4;
 
   // tslint:disable:no-magic-numbers
   constructor() {
@@ -34,6 +39,8 @@ export class MusicPlayer {
     if (state.input.isPressed('M')) {
       if (!this.musicIsOn) {
         this.musicIsOn = true;
+        // tslint:disable-next-line:no-magic-numbers
+        this.on.frequency.value = noteToFreq(this.note, this.octv);
         this.gn.connect(this.ad);
       }
     } else if (!state.input.isPressed('M')) {
@@ -42,5 +49,47 @@ export class MusicPlayer {
         this.gn.disconnect(this.ad);
       }
     }
+
+    if (state.input.isPressed('1')) {
+      this.note = 'C';
+    } else if (state.input.isPressed('2')) {
+      this.note = 'C#';
+    } else if (state.input.isPressed('3')) {
+      this.note = 'D';
+    } else if (state.input.isPressed('4')) {
+      this.note = 'D#';
+    } else if (state.input.isPressed('5')) {
+      this.note = 'E';
+    } else if (state.input.isPressed('6')) {
+      this.note = 'F';
+    } else if (state.input.isPressed('7')) {
+      this.note = 'F#';
+    } else if (state.input.isPressed('8')) {
+      this.note = 'G';
+    } else if (state.input.isPressed('9')) {
+      this.note = 'G#';
+    } else if (state.input.isPressed('0')) {
+      this.note = 'A';
+    } else if (state.input.isPressed('-')) {
+      this.note = 'A#';
+    } else if (state.input.isPressed('=')) {
+      this.note = 'B';
+    }
+
+    if (state.input.isPressed('Z')) {
+      this.octv = 1;
+    } else if (state.input.isPressed('X')) {
+      this.octv = 2;
+    } else if (state.input.isPressed('C')) {
+      this.octv = 2 + 1;
+    } else if (state.input.isPressed('V')) {
+      this.octv = 2 + 2;
+    } else if (state.input.isPressed('B')) {
+      this.octv = 2 + 2 + 1;
+    } else if (state.input.isPressed('N')) {
+      this.octv = 2 + 2 + 2;
+    }
+
+    logDebug(`Note is ${this.note} ${this.octv}`);
   }
 }
