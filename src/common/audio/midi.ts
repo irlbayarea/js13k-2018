@@ -31,7 +31,6 @@ export class MusicPlayer {
   } // tslint:enable:no-magic-numbers
 
   public update(): void {
-    // TODO: Make music start/stop playing upon pressing "M"?
     if (state.input.isPressed('M')) {
       if (!this.musicIsOn) {
         this.musicIsOn = true;
