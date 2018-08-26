@@ -6,3 +6,12 @@
 interface CanvasRenderingContext2D {
   resetTransform(): void;
 }
+
+/**
+ * Allow importing png assets.
+ */
+// declare module '*.png' {
+//   const content: any;
+//   export default content;
+// }
+declare module '*.png';
