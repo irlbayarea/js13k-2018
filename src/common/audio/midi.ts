@@ -2,13 +2,13 @@ import { state } from '../../index';
 // import { logDebug } from '../logger';
 
 export class MusicPlayer {
-  private ac: AudioContext = new AudioContext();
-  private on: OscillatorNode = this.ac.createOscillator();
-  private an: AnalyserNode = this.ac.createAnalyser();
+  private readonly ac: AudioContext = new AudioContext();
+  private readonly on: OscillatorNode = this.ac.createOscillator();
+  private readonly an: AnalyserNode = this.ac.createAnalyser();
   // private cn: ConvolverNode = this.ac.createConvolver();
-  private dn: WaveShaperNode = this.ac.createWaveShaper();
-  private gn: GainNode = this.ac.createGain();
-  private ad: AudioDestinationNode = this.ac.destination;
+  private readonly dn: WaveShaperNode = this.ac.createWaveShaper();
+  private readonly gn: GainNode = this.ac.createGain();
+  private readonly ad: AudioDestinationNode = this.ac.destination;
   private musicIsOn: boolean = false;
 
   // tslint:disable:no-magic-numbers
