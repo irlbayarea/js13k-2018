@@ -1,5 +1,3 @@
-import { logDebug } from '../logger';
-
 /**
  * The Input class handles application input. This clas may be used to check if
  * a key is currently pressed.
@@ -52,7 +50,6 @@ export class Input {
   };
 
   private readonly onKeyEvent = (inputEvent: InputEvent) => {
-    logDebug(`KEY PRESSED : ${inputEvent.key}`);
     this.eventBuffer.push(inputEvent);
   };
 }
