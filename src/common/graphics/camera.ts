@@ -1,3 +1,4 @@
+import { World } from '../../game/world/world';
 import { state } from '../../index';
 import { Vec2 } from '../math/vec2';
 
@@ -12,7 +13,9 @@ export class Camera {
     public center = Vec2.zero(),
     public scale = 1,
     public rotation = 0,
-    public zoomSpeed = 1.04
+    public zoomSpeed = 1.01,
+    // tslint:disable-next-line:no-magic-numbers
+    public rotationSpeed = 5 / Math.PI
   ) {}
 
   public apply() {
@@ -30,9 +33,17 @@ export class Camera {
 
   /**
    * @param zoomIn Zoom in (true) or out (false)
-   * @param deltaTime Elapsed time in seconds.
    */
-  public zoom(zoomIn: boolean) {
+  public updateZoom(zoomIn: boolean) {
+    // Note: not integrated on World.TICK_DELTA for simplicity.
     this.scale *= this.zoomSpeed ** (zoomIn ? 1 : -1);
+  }
+
+  /**
+   * @param clockwise Rotate clockwise (true) or counterclockwise (false).
+   */
+  public updateRotation(clockwise: boolean) {
+    this.rotation +=
+      World.TICK_DELTA * (clockwise ? -1 : 1) * this.rotationSpeed;
   }
 }

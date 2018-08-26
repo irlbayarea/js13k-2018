@@ -1,5 +1,6 @@
 import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
+import { World } from './world';
 
 const defaultRadius = 20;
 
@@ -15,8 +16,8 @@ export class Entity {
     this.radius = defaultRadius;
   }
 
-  public update(delta: number) {
-    this.position.addBy(Vec2.scale(this.velocity, delta));
+  public update() {
+    this.position.addBy(Vec2.scale(this.velocity, World.TICK_DELTA));
   }
 
   public render() {
