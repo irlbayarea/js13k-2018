@@ -1,3 +1,5 @@
+import { logDebug } from '../logger';
+
 /**
  * The Input class handles application input. This clas may be used to check if
  * a key is currently pressed.
@@ -8,7 +10,8 @@
  *
  * Example keys are:
  *   A, B, C, ...
- *   META (Mac Command Key), SHIFT, CONTROL, ALT, ' ' (Spacebar)
+ *   META (Windows/Apple Command Key), SHIFT, CONTROL, ALT, ' ' (Spacebar),
+ *   ARROWUP, ARROWDOWN, ARROWLEFT, ARROWRIGHT, ENTER, ESCAPE
  */
 export class Input {
   private readonly pressedKeys: Set<string>;
@@ -49,6 +52,7 @@ export class Input {
   };
 
   private readonly onKeyEvent = (inputEvent: InputEvent) => {
+    logDebug(`KEY PRESSED : ${inputEvent.key}`);
     this.eventBuffer.push(inputEvent);
   };
 }

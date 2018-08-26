@@ -1,39 +1,47 @@
 import { state } from '../../index';
-import { logDebug } from '../logger';
-import { Sequence } from './TinyMusic';
+// import { logDebug } from '../logger';
 
 export class MusicPlayer {
   private ac: AudioContext = new AudioContext();
-  private tempo: number = 128;
-  // private sequences: { [id: string]: Sequence } = {};
+  private on: OscillatorNode = this.ac.createOscillator();
+  private an: AnalyserNode = this.ac.createAnalyser();
+  // private cn: ConvolverNode = this.ac.createConvolver();
+  private dn: WaveShaperNode = this.ac.createWaveShaper();
+  private gn: GainNode = this.ac.createGain();
+  private ad: AudioDestinationNode = this.ac.destination;
+  private musicIsOn: boolean = false;
 
   // tslint:disable:no-magic-numbers
   constructor() {
-    // set the playback tempo (120 beats per minute)
-    this.tempo = 120;
+    this.on.type = 'sine';
+    this.on.frequency.value = 440;
+    this.on.start();
 
-    // create a new sequence
-    const sequence = new Sequence(this.ac, this.tempo, [
-      'G3 q',
-      'E4 q',
-      'C4 h',
-    ]);
+    this.on.connect(this.an);
 
-    // disable looping
-    // sequence.loop = false;
+    this.an.minDecibels = -40;
+    this.an.maxDecibels = 30;
 
-    // play it
-    sequence.play(this.ac.currentTime);
+    this.an.connect(this.dn);
+    this.dn.connect(this.gn);
 
-    logDebug('Just made MusicPlayer');
+    // this.cn.connect(this.gn);
+
+    this.ad = this.ac.destination;
   } // tslint:enable:no-magic-numbers
 
   public update(): void {
     // TODO: Make music start/stop playing upon pressing "M"?
     if (state.input.isPressed('M')) {
-      logDebug('Pressing M');
-    } else if (state.input.isPressed('N')) {
-      logDebug('Pressing N');
+      if (!this.musicIsOn) {
+        this.musicIsOn = true;
+        this.gn.connect(this.ad);
+      }
+    } else if (!state.input.isPressed('M')) {
+      if (this.musicIsOn) {
+        this.musicIsOn = false;
+        this.gn.disconnect(this.ad);
+      }
     }
   }
 }
