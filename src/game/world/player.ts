@@ -19,7 +19,6 @@ export class Player {
     // The new velocity is based on user input.
     const newVelocity = Vec2.zero();
     const { isPressed } = state.input;
-    // const { isPressed } = state.input;
     if (isPressed('A')) {
       newVelocity.x -= 1;
     }

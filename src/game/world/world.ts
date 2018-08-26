@@ -26,25 +26,8 @@ export class World {
     this.entities.push(new Entity(new Vec2(300, 400), Vec2.zero()));
   }
 
-  public handleInput() {
-    // Zoom in / out.
-    // A number greater than 1, determines how fast to zoom in / out.
-    const zoomSpeed = 1.1;
-    let zoomFactor = 1;
-    const { isPressed } = state.input;
-    if (isPressed('=')) {
-      zoomFactor *= zoomSpeed;
-    }
-    if (isPressed('-')) {
-      zoomFactor /= zoomSpeed;
-    }
-    this.camera.scale *= zoomFactor;
-  }
-
   // Update this World's state given the game's current timestamp in seconds.
   public update(time: number) {
-    // this.handleInput();
-
     // Don't update on the first tick.
     if (this.prevTime === Infinity) {
       this.prevTime = time;
@@ -52,6 +35,7 @@ export class World {
     }
     // Get time delta in seconds.
     const delta = time - this.prevTime;
+    this.handleCameraInput();
 
     // Perform updates.
     this.player.update();
@@ -64,10 +48,21 @@ export class World {
   }
 
   public render() {
-    // this.camera.center = this.player.entity.position;
-    // this.camera.apply();
+    this.camera.center = this.player.entity.position;
+    this.camera.apply();
     this.entities.forEach(entity => {
       entity.render();
     });
+  }
+
+  // Handles zoom in / out input.
+  private handleCameraInput() {
+    const { isPressed } = state.input;
+    if (isPressed('=')) {
+      this.camera.zoom(true);
+    }
+    if (isPressed('-')) {
+      this.camera.zoom(false);
+    }
   }
 }
