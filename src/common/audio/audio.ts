@@ -5,7 +5,7 @@ import { Instrument, Note } from './song';
 
 export class AudioHandler {
   private musicIsOn: boolean = false;
-  private instrument: Instrument = new Instrument(2 + 1);
+  private instrument: Instrument = new Instrument(new AudioContext(), 2 + 1);
 
   // tslint:disable:no-magic-numbers
   // constructor() {} // tslint:enable:no-magic-numbers
