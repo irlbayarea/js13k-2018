@@ -1,5 +1,6 @@
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
+import { Vec2 } from './common/math/vec2';
 import { World } from './game/world/world';
 
 // Defines application / game driver state. This is exported as a single object,
@@ -17,10 +18,11 @@ function renderFrames(time: number) {
   state.input.processEvents();
 
   // Display the time.
-  state.draw.context.textAlign = 'center';
+  state.draw.context.textAlign = 'left';
   state.draw.text(
     `Hello There! ${Math.round(time)}`,
-    state.draw.getCanvasCenter()
+    // tslint:disable-next-line:no-magic-numbers
+    new Vec2(20, state.draw.canvas.height - 20)
   );
 
   const millisInSecond = 1000;
