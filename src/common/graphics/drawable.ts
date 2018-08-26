@@ -1,12 +1,12 @@
 import { state } from '../../index';
-import { Vec2 } from '../math/vec2';
+import { Vector } from '../math';
 // import { Sprite } from './sprite';
 
 /**
  * IDrawable: specifies that things can be rendered.
  */
 export interface IDrawable {
-  render(position: Vec2): void;
+  render(position: Vector): void;
 }
 
 /**
@@ -22,7 +22,7 @@ export class CircleDrawable implements IDrawable {
     private readonly style: string
   ) {}
 
-  public render(position: Vec2) {
+  public render(position: Vector) {
     state.draw.context.fillStyle = this.style;
     state.draw.circle(position, this.radius);
   }

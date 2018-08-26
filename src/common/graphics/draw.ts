@@ -1,4 +1,4 @@
-import { Vec2 } from '../math/vec2';
+import { Vector } from '../math';
 
 /**
  * The `Draw` class abstracts drawing to the canvas passed to the constructor.
@@ -26,16 +26,16 @@ export class Draw {
 
   // Return a Vec2 at the center of the canvas.
   public getCanvasCenter = () => {
-    return new Vec2(this.canvas.width / 2, this.canvas.height / 2);
+    return new Vector(this.canvas.width / 2, this.canvas.height / 2);
   };
 
   // Render a circle with center position and radius.
-  public readonly circle = (p: Vec2, r: number) => {
+  public readonly circle = (p: Vector, r: number) => {
     this.ellipse(p, r, r);
   };
 
   // Render an ellipse given the center position, x radius, and y radius.
-  public readonly ellipse = (p: Vec2, rx: number, ry: number) => {
+  public readonly ellipse = (p: Vector, rx: number, ry: number) => {
     this.context.beginPath();
     this.context.ellipse(p.x, p.y, rx, ry, 0, 0, 2 * Math.PI);
     this.context.fill();
@@ -43,14 +43,14 @@ export class Draw {
 
   // Render a rectangle with upper left corner at the given position, width and
   // height.
-  public readonly rect = (p: Vec2, w: number, h: number) => {
+  public readonly rect = (p: Vector, w: number, h: number) => {
     this.context.rect(p.x, p.y, w, h);
   };
 
   // Render text at the given location.
   public readonly text = (
     text: string,
-    p: Vec2,
+    p: Vector,
     maxWidth?: number | undefined
   ) => {
     this.context.fillText(text, p.x, p.y, maxWidth);
