@@ -10,13 +10,13 @@ export const framesPerSecond = 60;
 
 /**
  * Manages the concept of time for game mechanics and rendering/processing.
- * 
+ *
  * Eventually will encapsulate the following:
  * - Scheduled events.
  * - Custom timers and steppers.
  */
 export class Timer {
-  private callbacks: Array<(time: number) => void> = [];
+  private readonly callbacks: Array<(time: number) => void> = [];
 
   /**
    * Updates the timer with the current time, and executes all timing events.
