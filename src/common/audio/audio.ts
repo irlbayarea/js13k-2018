@@ -18,7 +18,7 @@ export class AudioHandler {
 
   // tslint:disable:no-magic-numbers
   constructor() {
-    this.on.type = 'sine';
+    this.on.type = 'triangle';
     this.on.frequency.value = 440;
     this.on.start();
 
@@ -40,7 +40,6 @@ export class AudioHandler {
       if (!this.musicIsOn) {
         this.musicIsOn = true;
         // tslint:disable-next-line:no-magic-numbers
-        this.on.frequency.value = noteToFreq(this.note, this.octv);
         this.gn.connect(this.ad);
       }
     } else if (!state.input.isPressed('M')) {
@@ -89,6 +88,8 @@ export class AudioHandler {
     } else if (state.input.isPressed('N')) {
       this.octv = 2 + 2 + 2;
     }
+
+    this.on.frequency.value = noteToFreq(this.note, this.octv);
 
     logDebug(`Note is ${this.note} ${this.octv}`);
   }
