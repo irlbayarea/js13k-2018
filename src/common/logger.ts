@@ -8,7 +8,7 @@
  * @param args
  */
 // tslint:disable-next-line:no-any
-export function logDebug(...args: any[]) {
+export function logDebug(...args: any[]): void {
   if (!FLAGS_PRODUCTION) {
     console.log(...args);
   }
