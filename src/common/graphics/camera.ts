@@ -1,6 +1,6 @@
 import { World } from '../../game/world/world';
 import { state } from '../../index';
-import { Vec2 } from '../math/vec2';
+import { Vector } from '../math';
 
 export class Camera {
   /**
@@ -10,7 +10,7 @@ export class Camera {
    * @param zoomSpeed How fast to zoom the camera. Must be greater than 1.
    */
   constructor(
-    public center = Vec2.zero(),
+    public center = Vector.origin,
     public scale = 1,
     public rotation = 0,
     public zoomSpeed = 1.01,

@@ -1,4 +1,4 @@
-import { random, Rectangle } from '../common/math/math';
+import { random, Rectangle } from '../common/math';
 
 const minRoomSize = 5;
 const maxRoomSize = 15;

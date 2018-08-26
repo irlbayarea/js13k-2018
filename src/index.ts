@@ -1,6 +1,6 @@
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
-import { Vec2 } from './common/math/vec2';
+import { Vector } from './common/math';
 import { aSecondInMs, Timer } from './common/time';
 import { World } from './game/world/world';
 
@@ -25,7 +25,7 @@ function renderFrames(time: number) {
   state.draw.text(
     `Hello There! ${Math.round(time)}`,
     // tslint:disable-next-line:no-magic-numbers
-    new Vec2(20, state.draw.canvas.height - 20)
+    new Vector(20, state.draw.canvas.height - 20)
   );
 
   world.update(time / aSecondInMs);
