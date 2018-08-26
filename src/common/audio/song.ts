@@ -1,163 +1,111 @@
 import { logDebug } from '../logger';
 
 // tslint:disable:no-magic-numbers
+const noteValues: { [note: string]: number } = {
+  A: 69,
+  'A#': 70,
+  Ab: 68,
+  B: 71,
+  'B#': 72,
+  Bb: 70,
+  C: 60,
+  'C#': 61,
+  Cb: 59,
+  D: 62,
+  'D#': 63,
+  Db: 61,
+  E: 64,
+  'E#': 65,
+  Eb: 63,
+  F: 65,
+  'F#': 66,
+  Fb: 64,
+  G: 67,
+  'G#': 68,
+  Gb: 66,
+}; // tslint:enable:no-magic-numbers
+
+// tslint:disable:no-magic-numbers
+const beatValues: { [beat: string]: number } = {
+  e: 1 / 8,
+  h: 1 / 2,
+  q: 1 / 2,
+  s: 1 / 16,
+  t: 1 / 32,
+  w: 1,
+}; // tslint:enable:no-magic-numbers
+
+// tslint:disable:no-magic-numbers
 export function noteToFreq(note: string, octave: number): number {
-  let m: number;
-
-  logDebug(`note value is ${note} ${octave}`);
-
-  switch (note) {
-    case 'Cb': {
-      m = 59;
-      break;
-    }
-    case 'C': {
-      m = 60;
-      break;
-    } // C4
-    case 'C#': {
-      m = 61;
-      break;
-    }
-    case 'Db': {
-      m = 61;
-      break;
-    }
-    case 'D': {
-      m = 62;
-      break;
-    } // D4
-    case 'D#': {
-      m = 63;
-      break;
-    }
-    case 'Eb': {
-      m = 63;
-      break;
-    }
-    case 'E': {
-      m = 64;
-      break;
-    } // E4
-    case 'E#': {
-      m = 65;
-      break;
-    }
-    case 'Fb': {
-      m = 64;
-      break;
-    }
-    case 'F': {
-      m = 65;
-      break;
-    } // F4
-    case 'F#': {
-      m = 66;
-      break;
-    }
-    case 'Gb': {
-      m = 66;
-      break;
-    }
-    case 'G': {
-      m = 67;
-      break;
-    } // G4
-    case 'G#': {
-      m = 68;
-      break;
-    }
-    case 'Ab': {
-      m = 68;
-      break;
-    }
-    case 'A': {
-      m = 69;
-      break;
-    } // A4
-    case 'A#': {
-      m = 70;
-      break;
-    }
-    case 'Bb': {
-      m = 70;
-      break;
-    }
-    case 'B': {
-      m = 71;
-      break;
-    } // B4
-    case 'B#': {
-      m = 72;
-      break;
-    }
-    default: {
-      m = 69;
-      break;
-    } // A4
-  }
-
-  logDebug(`m value is ${m}`);
-
+  const m: number =
+    Object.keys(noteValues).find(key => note === key) !== undefined
+      ? noteValues[note]
+      : noteValues.C;
+  logDebug(`${note} ${octave} => ${m}`);
   return Math.pow(2, (m + -69) / 12 + (octave - 4)) * 440;
 } // tslint:enable:no-magic-numbers
 
-// tslint:disable:no-magic-numbers
-export function beatStringToDur(beat: string) {
-  switch (beat) {
-    case 'w': {
-      return 1;
-    }
-    case 'h': {
-      return 1 / 2;
-    }
-    case 'q': {
-      return 1 / 4;
-    }
-    case 'e': {
-      return 1 / 8;
-    }
-    case 's': {
-      return 1 / 16;
-    }
-    case 't': {
-      return 1 / 32;
-    }
-    default: {
-      return 0;
-    }
-  }
-} // tslint:enable:no-magic-numbers
-
-export function beatsToDur(beats: string): number {
-  // d = dot
-  let dur: number = 0;
-  let prevNote: string = '';
-  let prevDots: number = 0;
-  beats.split('').forEach(char => {
-    switch (char) {
-      case 'd': {
-        dur += beatStringToDur(prevNote) / Math.pow(2, prevDots + 1);
-        prevDots += 1;
-        prevNote = char;
-      }
-      default: {
-        prevNote = char;
-        prevDots = 0;
-        dur += beatStringToDur(prevNote);
-      }
-    }
-  });
-
-  return dur;
+export function beatStringToDur(beatString: string) {
+  const beat: string = beatString.substr(0, 1);
+  const dots: number = beatString.length - 1;
+  return Object.keys(beatValues).find(key => beat === key) !== undefined
+    ? beatValues[beat] * (2 - 1 / Math.pow(2, dots))
+    : 0;
 }
 
 export class Note {
-  public readonly freq: number = 0.0;
+  constructor(
+    public readonly note: string,
+    public readonly octave: number,
+    public readonly beat: string = 'q'
+  ) {}
 
-  constructor(note: string, octv: number, public readonly beats: number = 1.0) {
-    this.freq = noteToFreq(note, octv);
+  public freq(): number {
+    return noteToFreq(this.note, this.octave);
+  }
+
+  public beats(): number {
+    return stringToBeats(this.beat);
   }
 }
+export class Instrument {
+  private readonly ac: AudioContext = new AudioContext();
+  private readonly ons: OscillatorNode[] = [];
+  private readonly dn: WaveShaperNode = this.ac.createWaveShaper();
+  private readonly gn: GainNode = this.ac.createGain();
+  private readonly ad: AudioDestinationNode = this.ac.destination;
 
-export class Sound {}
+  constructor(
+    private readonly numNotes = 6,
+    private readonly oscType: OscillatorType = 'sawtooth'
+  ) {
+    for (let i = 0; i < numNotes; i++) {
+      this.ons[i] = this.ac.createOscillator();
+      this.ons[i].type = this.oscType;
+      this.ons[i].connect(this.dn);
+      this.ons[i].start();
+    }
+    this.dn.connect(this.gn);
+  }
+
+  public setFreqs(notes: Note[]): void {
+    // Set freq of given notes and connect to graph
+    for (let i = 0; i < Math.min(notes.length, this.numNotes); i++) {
+      this.ons[i].frequency.value = notes[i].freq();
+      this.ons[i].connect(this.dn);
+    }
+    // If any notes left out, set freq to 0 and disconnect from graph
+    for (let i = Math.min(notes.length, this.numNotes); i < notes.length; i++) {
+      this.ons[i].frequency.value = 0;
+      this.ons[i].disconnect();
+    }
+  }
+
+  public play(): void {
+    this.gn.connect(this.ad);
+  }
+
+  public stop(): void {
+    this.gn.disconnect(this.ad);
+  }
+}
