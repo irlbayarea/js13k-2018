@@ -1,6 +1,7 @@
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
 import { Vector } from './common/math';
+import { aSecondInMs, Timer } from './common/time';
 import { World } from './game/world/world';
 
 // Defines application / game driver state. This is exported as a single object,
@@ -11,6 +12,8 @@ class State {
   ) as HTMLCanvasElement);
   public readonly input = new Input();
 }
+
+const timer = new Timer();
 
 // Function that is called each frame.
 function renderFrames(time: number) {
@@ -25,11 +28,9 @@ function renderFrames(time: number) {
     new Vector(20, state.draw.canvas.height - 20)
   );
 
-  const millisInSecond = 1000;
-  world.update(time / millisInSecond);
+  world.update(time / aSecondInMs);
   world.render();
-
-  window.requestAnimationFrame(renderFrames);
+  window.requestAnimationFrame(timer.update);
 }
 
 // Set up application state.
@@ -37,4 +38,5 @@ export const state = new State();
 const world = new World();
 
 // Start the game driver.
-window.requestAnimationFrame(renderFrames);
+timer.subscribe(renderFrames);
+window.requestAnimationFrame(timer.update);

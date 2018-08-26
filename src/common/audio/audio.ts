@@ -1,7 +1,5 @@
 import { state } from '../../index';
-import { logDebug } from '../logger';
 import { noteToFreq } from './song';
-// import { logDebug } from '../logger';
 
 export class AudioHandler {
   private readonly ac: AudioContext = new AudioContext();
@@ -91,6 +89,6 @@ export class AudioHandler {
 
     this.on.frequency.value = noteToFreq(this.note, this.octv);
 
-    logDebug(`Note is ${this.note} ${this.octv}`);
+    // logDebug(`Note is ${this.note} ${this.octv}`);
   }
 }
