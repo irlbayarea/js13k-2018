@@ -16,7 +16,6 @@ export class World {
     this.player = new Player();
     this.camera = new Camera();
     this.musicPlayer = new MusicPlayer();
-    this.musicPlayer.startMusic();
     this.entities.push(this.player.entity);
   }
 
