@@ -1,6 +1,9 @@
+import { spriteSheet } from '../../assets/sprite-listing';
 import { AudioHandler } from '../../common/audio/audio';
 import { Camera } from '../../common/graphics/camera';
-import { CircleDrawable } from '../../common/graphics/drawable';
+import { CircleDrawable, SpriteDrawable } from '../../common/graphics/drawable';
+import { Sprite } from '../../common/graphics/sprites';
+import { Rectangle } from '../../common/math/math';
 import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
 import { Entity } from './entity';
@@ -75,6 +78,15 @@ export class World {
     this.entities.push(randoEntityMaker(new Vec2(360, 460)));
     this.entities.push(randoEntityMaker(new Vec2(100, 250)));
     this.entities.push(randoEntityMaker(new Vec2(500, 150)));
+
+    const testSprite = new Sprite(spriteSheet, new Rectangle(16, 16, 16, 16));
+    this.entities.push(
+      new Entity(
+        new Vec2(100, 100),
+        Vec2.zero(),
+        new SpriteDrawable(testSprite, 16)
+      )
+    );
   }
 
   /**
