@@ -1,10 +1,8 @@
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
 import { Vec2 } from './common/math/vec2';
-import { Ticker } from './common/time/ticker';
+import { aSecondInMs, Timer } from './common/time';
 import { World } from './game/world/world';
-
-new Ticker().start();
 
 // Defines application / game driver state. This is exported as a single object,
 // `state` to be consumed throughout the game.
@@ -15,7 +13,7 @@ class State {
   public readonly input = new Input();
 }
 
-const ticker = new Ticker();
+const timer = new Timer();
 
 // Function that is called each frame.
 function renderFrames(time: number) {
@@ -30,8 +28,9 @@ function renderFrames(time: number) {
     new Vec2(20, state.draw.canvas.height - 20)
   );
 
-  world.update(time);
+  world.update(time / aSecondInMs);
   world.render();
+  window.requestAnimationFrame(timer.update);
 }
 
 // Set up application state.
@@ -39,5 +38,5 @@ export const state = new State();
 const world = new World();
 
 // Start the game driver.
-ticker.subscribe(renderFrames);
-ticker.start();
+timer.subscribe(renderFrames);
+window.requestAnimationFrame(timer.update);

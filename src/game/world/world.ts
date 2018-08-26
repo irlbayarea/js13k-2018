@@ -4,7 +4,6 @@ import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
 import { Entity } from './entity';
 import { Player } from './player';
-import { logDebug } from '../../common/logger';
 
 /**
  * The game world. Holds world state and update logic.
@@ -33,13 +32,21 @@ export class World {
    * enough to avoid performance issues.
    */
   // tslint:disable-next-line:no-magic-numbers
-  public static readonly TICK_DELTA = 1 / 60;
-
+  public static readonly TICK_DELTA = 1 / 180;
+  /**
+   * The maximum time in seconds an update is allowed to process. This prevents
+   * the game from going haywire when there are performance issues and/or when
+   * the browser process was not running for some time.
+   */
+  private static readonly MAX_UPDATE_TIME = 0.25;
   private readonly entities: Entity[];
   private readonly player: Player;
   private readonly camera: Camera;
   private readonly musicPlayer: AudioHandler;
-
+  /**
+   * Set Infinity to designate first tick.
+   */
+  private prevTime = Infinity;
   /**
    * Accumulates real-world time and is "eaten" by updates. A tick runs when
    * this value reaches zero. See also `TICK_DELTA`.
@@ -73,8 +80,15 @@ export class World {
   /**
    * Update this World's state given the game's current timestamp in seconds.
    */
-  public update(delta: number) {
-    logDebug(delta);
+  public update(time: number) {
+    // Don't update on the first call, treat it as the start of world time.
+    if (this.prevTime === Infinity) {
+      this.prevTime = time;
+      return;
+    }
+
+    // Get time delta in seconds.
+    const delta = Math.min(time - this.prevTime, World.MAX_UPDATE_TIME);
     this.updateTimePool += delta;
 
     // "tick" until caught up with real-world time. See `TICK_DELTA`.
@@ -82,6 +96,9 @@ export class World {
       this.updateTimePool -= World.TICK_DELTA;
       this.tick();
     }
+
+    // So we know how much time has ellapsed between ticks.
+    this.prevTime = time;
   }
 
   /**
