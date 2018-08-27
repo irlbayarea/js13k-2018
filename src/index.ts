@@ -1,3 +1,4 @@
+import { AudioHandler } from './common/audio/audio';
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
 import { Vec2 } from './common/math/vec2';
@@ -36,7 +37,9 @@ function renderFrames(time: number) {
 // Set up application state.
 export const state = new State();
 const world = new World();
+const audio = new AudioHandler();
 
 // Start the game driver.
 timer.subscribe(renderFrames);
+audio.playMusic();
 window.requestAnimationFrame(timer.update);

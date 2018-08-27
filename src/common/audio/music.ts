@@ -1,4 +1,4 @@
-// import { logDebug } from '../logger';
+import { logDebug } from '../logger';
 
 const REST: string = 'R';
 const DOT: string = 'd';
@@ -142,15 +142,17 @@ export class Instrument {
 
     // Set the music
     // For each register in the SheetMusic object...
-    Object.keys(sm.registers).forEach((vali: string, _) => {
+    Object.keys(sm.registers).forEach((vali: string, i: number) => {
+      logDebug(`sm.registers: ${Object.keys(sm.registers)}`);
       // For each Note in the register...
-      sm.registers[+vali].forEach((valj: Note, j: number) => {
+      sm.registers[+vali].forEach((valj: Note, _) => {
+        logDebug(`osc ${i}: ${this.ons[i]}`);
         // Set frequency
-        this.ons[j].frequency.setValueAtTime(valj.freq(), t[j]);
+        this.ons[i].frequency.setValueAtTime(valj.freq(), t[i]);
 
         // Advance time and set oscillator frequency to zero
-        t[j] += valj.beats();
-        this.ons[j].frequency.setValueAtTime(0, t[j]);
+        t[i] += valj.beats();
+        this.ons[i].frequency.setValueAtTime(0, t[i]);
       });
     });
   }
@@ -167,13 +169,10 @@ export class Instrument {
         // tslint:disable-next-line:no-magic-numbers
         this.ac.currentTime + notes[i].duration(tempo)
       );
-
-      this.ons[i].connect(this.dn);
     }
     // If any notes left out, set freq to 0 and disconnect from graph
     for (let i = Math.min(notes.length, this.numNotes); i < notes.length; i++) {
       this.ons[i].frequency.setValueAtTime(0, this.ac.currentTime);
-      // this.ons[i].disconnect();
     }
   }
 
@@ -185,9 +184,15 @@ export class Instrument {
     this.gn.disconnect(this.ad);
   }
 
+  // Create Registers <=> Oscillators
   private createRegisters(n: number) {
+    // Disconnect exisiting oscillators
+    // TODO: can I just remove them from the AudioContext?
+    this.ons.forEach(val => {
+      val.disconnect();
+    });
+
     this.numNotes = n;
-    this.ons = [];
     for (let i = 0; i < this.numNotes; i++) {
       this.ons[i] = this.ac.createOscillator();
       this.ons[i].type = this.oscType;
