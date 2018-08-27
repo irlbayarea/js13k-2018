@@ -4,7 +4,10 @@ import { Instrument, Note, SheetMusic, str2Note } from './music';
 export class AudioHandler {
   private musicIsOn: boolean = false;
   private songisLearned: boolean = false;
-  private instrument: Instrument = new Instrument(new AudioContext(), 2 + 1);
+  private readonly instrument: Instrument = new Instrument(
+    new AudioContext(),
+    2 + 1
+  );
 
   // tslint:disable:no-magic-numbers
   // constructor() {} // tslint:enable:no-magic-numbers
