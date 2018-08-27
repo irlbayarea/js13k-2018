@@ -1,4 +1,7 @@
-import { CircleDrawable } from '../../common/graphics/drawable';
+import { spriteSheet } from '../../assets/sprite-listing';
+import { SpriteDrawable } from '../../common/graphics/drawable';
+import { Sprite } from '../../common/graphics/sprites';
+import { Rectangle } from '../../common/math/math';
 import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
 import { Entity } from './entity';
@@ -7,14 +10,15 @@ export class Player {
   public readonly entity: Entity;
 
   constructor() {
+    const playerWidth = 24;
     // TODO: disable this when the magic has been lost.
-    const playerRadius = 20;
     // tslint:disable:no-magic-numbers
     const playerStartPosition = new Vec2(200, 200);
+    const playerSprite = new Sprite(spriteSheet, new Rectangle(16, 16, 0, 0));
     this.entity = new Entity(
       playerStartPosition,
       Vec2.zero(),
-      new CircleDrawable(playerRadius, 'blue')
+      new SpriteDrawable(playerSprite, playerWidth)
     );
   }
 

@@ -12,11 +12,16 @@ export class Sprite {
   ) {}
 
   /**
-   * Renders this sprite.
+   * Renders this sprite centered at the given position.
    */
   public render(position: Vec2, width: number) {
     this.spriteSheet.render(
-      new Rectangle(width, width, position.x, position.y),
+      new Rectangle(
+        width,
+        width,
+        position.x - width / 2,
+        position.y - width / 2
+      ),
       this.sourceRect
     );
   }
@@ -64,8 +69,8 @@ export class SpriteSheet {
       sourceRect.top,
       sourceRect.width,
       sourceRect.height,
-      targetRect.left - targetRect.width / 2,
-      targetRect.top - targetRect.height / 2,
+      targetRect.left,
+      targetRect.top,
       targetRect.width,
       targetRect.height
     );

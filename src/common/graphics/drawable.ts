@@ -39,9 +39,6 @@ export class SpriteDrawable implements IDrawable {
   ) {}
 
   public render(position: Vec2) {
-    // TODO draw the sprite
-    state.draw.context.fillStyle = 'violet';
-    state.draw.circle(position, this.width / 2);
     this.sprite.render(position, this.width);
   }
 }

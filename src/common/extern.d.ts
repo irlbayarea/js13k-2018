@@ -10,8 +10,4 @@ interface CanvasRenderingContext2D {
 /**
  * Allow importing png assets.
  */
-// declare module '*.png' {
-//   const content: any;
-//   export default content;
-// }
 declare module '*.png';
