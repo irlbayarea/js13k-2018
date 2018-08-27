@@ -1,5 +1,4 @@
 import { state } from '../../index';
-import { logDebug } from '../logger';
 import { Instrument, Note, SheetMusic, str2Note } from './music';
 
 export class AudioHandler {
@@ -12,30 +11,41 @@ export class AudioHandler {
 
   public playMusic(): void {
     if (!this.songisLearned) {
-      const sm = new SheetMusic(120, {
+      const tempo = 60;
+      const sm = new SheetMusic(tempo, {
         0: [
-          str2Note('D|3|qd'),
-          str2Note('R||e'),
-          str2Note('A|3|qd'),
-          str2Note('R||e'),
+          str2Note('D|3|q'),
+          str2Note('A|3|q'),
+          str2Note('B|3|q'),
+          str2Note('F#|3|q'),
+          str2Note('G|3|q'),
+          str2Note('D|3|q'),
+          str2Note('G|3|q'),
+          str2Note('A|3|q'),
         ],
         1: [
-          str2Note('F#|4|qd'),
-          str2Note('R||e'),
-          str2Note('C#|4|qd'),
-          str2Note('R||e'),
+          str2Note('F#|4|q'),
+          str2Note('C#|4|q'),
+          str2Note('D|4|q'),
+          str2Note('A|3|q'),
+          str2Note('B|3|q'),
+          str2Note('F#|3|q'),
+          str2Note('B|3|q'),
+          str2Note('C#|4|q'),
         ],
         2: [
-          str2Note('A|4|qd'),
-          str2Note('R||e'),
-          str2Note('E|4|qd'),
-          str2Note('R||e'),
+          str2Note('A|4|q'),
+          str2Note('E|4|q'),
+          str2Note('F#|4|q'),
+          str2Note('C#|2|q'),
+          str2Note('D|3|q'),
+          str2Note('A|2|q'),
+          str2Note('D|3|q'),
+          str2Note('E|3|q'),
         ],
       });
       this.instrument.learnMusic(sm);
       this.instrument.play();
-
-      logDebug(`${sm.registers[0][0].duration(120)}`);
       this.songisLearned = true;
     }
   }

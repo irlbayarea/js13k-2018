@@ -1,4 +1,4 @@
-import { logDebug } from '../logger';
+// import { logDebug } from '../logger';
 
 const REST: string = 'R';
 const DOT: string = 'd';
@@ -109,7 +109,8 @@ export class Note {
 export class SheetMusic {
   constructor(
     public readonly tempo: number = 120,
-    public readonly registers: { [id: number]: Note[] }
+    public readonly registers: { [id: number]: Note[] },
+    public readonly volume: number = 0.1
   ) {}
 
   public numRegisters(): number {
@@ -118,24 +119,27 @@ export class SheetMusic {
 }
 
 export class Instrument {
-  private ons: OscillatorNode[] = [];
+  private readonly ons: OscillatorNode[] = [];
   private readonly dn: WaveShaperNode = this.ac.createWaveShaper();
   private readonly gn: GainNode = this.ac.createGain();
   private readonly ad: AudioDestinationNode = this.ac.destination;
 
   constructor(
     private readonly ac: AudioContext,
-    private numNotes = 6,
+    private numRegisters = 1,
     private readonly oscType: OscillatorType = 'sawtooth'
   ) {
     this.ac = ac;
-    this.createRegisters(this.numNotes);
+    this.createRegisters(this.numRegisters);
     this.dn.connect(this.gn);
   }
 
   public learnMusic(sm: SheetMusic) {
     // Keeps track of time
-    const t: number[] = new Array(sm.numRegisters()).fill(this.ac.currentTime);
+    const t0: number = this.ac.currentTime;
+    const t: number[] = new Array(sm.numRegisters()).fill(t0);
+
+    this.gn.gain.value = sm.volume;
 
     // Set number of registers required for this sheet music by this song
     this.createRegisters(sm.numRegisters());
@@ -143,15 +147,13 @@ export class Instrument {
     // Set the music
     // For each register in the SheetMusic object...
     Object.keys(sm.registers).forEach((vali: string, i: number) => {
-      logDebug(`sm.registers: ${Object.keys(sm.registers)}`);
       // For each Note in the register...
       sm.registers[+vali].forEach((valj: Note, _) => {
-        logDebug(`osc ${i}: ${this.ons[i]}`);
         // Set frequency
         this.ons[i].frequency.setValueAtTime(valj.freq(), t[i]);
 
         // Advance time and set oscillator frequency to zero
-        t[i] += valj.beats();
+        t[i] += valj.duration(sm.tempo);
         this.ons[i].frequency.setValueAtTime(0, t[i]);
       });
     });
@@ -159,7 +161,7 @@ export class Instrument {
 
   public setFreqs(notes: Note[], tempo: number = 120): void {
     // Set freq of given notes and connect to graph
-    for (let i = 0; i < Math.min(notes.length, this.numNotes); i++) {
+    for (let i = 0; i < Math.min(notes.length, this.numRegisters); i++) {
       this.ons[i].frequency.setValueAtTime(
         notes[i].freq(),
         this.ac.currentTime
@@ -171,7 +173,11 @@ export class Instrument {
       );
     }
     // If any notes left out, set freq to 0 and disconnect from graph
-    for (let i = Math.min(notes.length, this.numNotes); i < notes.length; i++) {
+    for (
+      let i = Math.min(notes.length, this.numRegisters);
+      i < notes.length;
+      i++
+    ) {
       this.ons[i].frequency.setValueAtTime(0, this.ac.currentTime);
     }
   }
@@ -192,8 +198,8 @@ export class Instrument {
       val.disconnect();
     });
 
-    this.numNotes = n;
-    for (let i = 0; i < this.numNotes; i++) {
+    this.numRegisters = n;
+    for (let i = 0; i < this.numRegisters; i++) {
       this.ons[i] = this.ac.createOscillator();
       this.ons[i].type = this.oscType;
       this.ons[i].connect(this.dn);
