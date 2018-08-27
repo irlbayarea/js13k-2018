@@ -1,94 +1,122 @@
 import { state } from '../../index';
-import { noteToFreq } from './song';
+import { Instrument, Note, SheetMusic, str2Note } from './music';
 
 export class AudioHandler {
-  private readonly ac: AudioContext = new AudioContext();
-  private readonly on: OscillatorNode = this.ac.createOscillator();
-  private readonly an: AnalyserNode = this.ac.createAnalyser();
-  // private cn: ConvolverNode = this.ac.createConvolver();
-  private readonly dn: WaveShaperNode = this.ac.createWaveShaper();
-  private readonly gn: GainNode = this.ac.createGain();
-  private readonly ad: AudioDestinationNode = this.ac.destination;
   private musicIsOn: boolean = false;
-
-  private note: string = 'A';
-  private octv: number = 4;
+  private songisLearned: boolean = false;
+  private readonly instrument: Instrument = new Instrument(
+    new AudioContext(),
+    2 + 1
+  );
 
   // tslint:disable:no-magic-numbers
-  constructor() {
-    this.on.type = 'sawtooth';
-    this.on.frequency.value = 440;
-    this.on.start();
+  // constructor() {} // tslint:enable:no-magic-numbers
 
-    this.on.connect(this.an);
-
-    this.an.minDecibels = -40;
-    this.an.maxDecibels = 30;
-
-    this.an.connect(this.dn);
-    this.dn.connect(this.gn);
-
-    // this.cn.connect(this.gn);
-
-    this.ad = this.ac.destination;
-  } // tslint:enable:no-magic-numbers
+  public playMusic(): void {
+    if (!this.songisLearned) {
+      const tempo = 60;
+      const sm = new SheetMusic(tempo, {
+        0: [
+          str2Note('D|3|q'),
+          str2Note('A|3|q'),
+          str2Note('B|3|q'),
+          str2Note('F#|3|q'),
+          str2Note('G|3|q'),
+          str2Note('D|3|q'),
+          str2Note('G|3|q'),
+          str2Note('A|3|q'),
+        ],
+        1: [
+          str2Note('F#|4|q'),
+          str2Note('C#|4|q'),
+          str2Note('D|4|q'),
+          str2Note('A|3|q'),
+          str2Note('B|3|q'),
+          str2Note('F#|3|q'),
+          str2Note('B|3|q'),
+          str2Note('C#|4|q'),
+        ],
+        2: [
+          str2Note('A|4|q'),
+          str2Note('E|4|q'),
+          str2Note('F#|4|q'),
+          str2Note('C#|2|q'),
+          str2Note('D|3|q'),
+          str2Note('A|2|q'),
+          str2Note('D|3|q'),
+          str2Note('E|3|q'),
+        ],
+      });
+      this.instrument.learnMusic(sm);
+      this.instrument.play();
+      this.songisLearned = true;
+    }
+  }
 
   public update(): void {
     if (state.input.isPressed('M')) {
       if (!this.musicIsOn) {
         this.musicIsOn = true;
+        this.instrument.play();
         // tslint:disable-next-line:no-magic-numbers
-        this.gn.connect(this.ad);
       }
     } else if (!state.input.isPressed('M')) {
       if (this.musicIsOn) {
         this.musicIsOn = false;
-        this.gn.disconnect(this.ad);
+        this.instrument.stop();
       }
     }
 
+    // tslint:disable:no-magic-numbers
     if (state.input.isPressed('1')) {
-      this.note = 'C';
+      this.instrument.setFreqs([
+        str2Note('D|3|h'),
+        str2Note('F#|4|h'),
+        str2Note('A|4|h'),
+      ]);
     } else if (state.input.isPressed('2')) {
-      this.note = 'C#';
+      this.instrument.setFreqs([
+        str2Note('A|3|h'),
+        str2Note('C#|4|h'),
+        str2Note('E|4|h'),
+      ]);
     } else if (state.input.isPressed('3')) {
-      this.note = 'D';
+      this.instrument.setFreqs([
+        new Note('B', 3, 'h'),
+        new Note('D', 4, 'h'),
+        new Note('F#', 4, 'h'),
+      ]);
     } else if (state.input.isPressed('4')) {
-      this.note = 'D#';
+      this.instrument.setFreqs([
+        new Note('F#', 3, 'h'),
+        new Note('A', 3, 'h'),
+        new Note('C#', 2, 'h'),
+      ]);
     } else if (state.input.isPressed('5')) {
-      this.note = 'E';
+      this.instrument.setFreqs([
+        new Note('G', 3, 'h'),
+        new Note('B', 3, 'h'),
+        new Note('D', 3, 'h'),
+      ]);
     } else if (state.input.isPressed('6')) {
-      this.note = 'F';
+      this.instrument.setFreqs([
+        new Note('D', 3, 'h'),
+        new Note('F#', 3, 'h'),
+        new Note('A', 2, 'h'),
+      ]);
     } else if (state.input.isPressed('7')) {
-      this.note = 'F#';
+      this.instrument.setFreqs([
+        new Note('G', 3, 'h'),
+        new Note('B', 3, 'h'),
+        new Note('D', 3, 'h'),
+      ]);
     } else if (state.input.isPressed('8')) {
-      this.note = 'G';
-    } else if (state.input.isPressed('9')) {
-      this.note = 'G#';
-    } else if (state.input.isPressed('0')) {
-      this.note = 'A';
-    } else if (state.input.isPressed('-')) {
-      this.note = 'A#';
-    } else if (state.input.isPressed('=')) {
-      this.note = 'B';
+      this.instrument.setFreqs([
+        new Note('A', 3, 'h'),
+        new Note('C#', 4, 'h'),
+        new Note('E', 3, 'h'),
+      ]);
     }
-
-    if (state.input.isPressed('Z')) {
-      this.octv = 1;
-    } else if (state.input.isPressed('X')) {
-      this.octv = 2;
-    } else if (state.input.isPressed('C')) {
-      this.octv = 2 + 1;
-    } else if (state.input.isPressed('V')) {
-      this.octv = 2 + 2;
-    } else if (state.input.isPressed('B')) {
-      this.octv = 2 + 2 + 1;
-    } else if (state.input.isPressed('N')) {
-      this.octv = 2 + 2 + 2;
-    }
-
-    this.on.frequency.value = noteToFreq(this.note, this.octv);
-
-    // logDebug(`Note is ${this.note} ${this.octv}`);
+    // tslint:enable:no-magic-numbers
   }
 }
