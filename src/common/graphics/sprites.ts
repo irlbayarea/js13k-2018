@@ -64,8 +64,8 @@ export class SpriteSheet {
       sourceRect.top,
       sourceRect.width,
       sourceRect.height,
-      targetRect.left,
-      targetRect.top,
+      targetRect.left - targetRect.width / 2,
+      targetRect.top - targetRect.height / 2,
       targetRect.width,
       targetRect.height
     );
