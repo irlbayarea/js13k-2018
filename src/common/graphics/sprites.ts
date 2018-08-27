@@ -57,6 +57,7 @@ export class SpriteSheet {
       return;
     }
 
+    state.draw.context.imageSmoothingEnabled = false;
     state.draw.context.drawImage(
       this.image,
       sourceRect.left,
