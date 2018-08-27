@@ -21,6 +21,22 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              optipng: {
+                enabled: true,
+                optimizationLevel: 7,
+                bitDepthReduction: true,
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {

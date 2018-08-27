@@ -1,6 +1,7 @@
 import { state } from '../../index';
 import { Vec2 } from '../math/vec2';
 // import { Sprite } from './sprite';
+import { Sprite } from './sprites';
 
 /**
  * IDrawable: specifies that things can be rendered.
@@ -31,14 +32,13 @@ export class CircleDrawable implements IDrawable {
 /**
  * Drawable Sprite.
  */
-// export class SpriteDrawable implements IDrawable {
-//   constructor(private readonly sprite: Sprite, private readonly width: number) {
-//     // TODO: delete this
-//     this.sprite.render(Vec2.zero(), 2);
-//   }
-//   public render(position: Vec2) {
-//     // TODO: render a sprite
-//     state.draw.context.fillStyle = 'violet';
-//     state.draw.circle(position, this.width / 2);
-//   }
-// }
+export class SpriteDrawable implements IDrawable {
+  constructor(
+    private readonly sprite: Sprite,
+    private readonly width: number
+  ) {}
+
+  public render(position: Vec2) {
+    this.sprite.render(position, this.width);
+  }
+}
