@@ -28,7 +28,11 @@ module.exports = {
           {
             loader: 'image-webpack-loader',
             options: {
-              disable: true, // webpack@2.x and newer
+              optipng: {
+                enabled: true,
+                optimizationLevel: 7,
+                bitDepthReduction: true,
+              },
             },
           },
         ],
