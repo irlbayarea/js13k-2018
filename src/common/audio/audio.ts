@@ -1,7 +1,6 @@
+// import { logDebug } from '../logger';
 import { state } from '../../index';
-// import { logDebug } from '../logger';
-import { Instrument, Note } from './song';
-// import { logDebug } from '../logger';
+import { Instrument, Note, str2Note } from './music';
 
 export class AudioHandler {
   private musicIsOn: boolean = false;
@@ -27,51 +26,51 @@ export class AudioHandler {
     // tslint:disable:no-magic-numbers
     if (state.input.isPressed('1')) {
       this.instrument.setFreqs([
-        new Note('D', 4),
-        new Note('F#', 4),
-        new Note('A', 4),
+        str2Note('D|3|h'),
+        str2Note('F#|4|h'),
+        str2Note('A|4|h'),
       ]);
     } else if (state.input.isPressed('2')) {
       this.instrument.setFreqs([
-        new Note('A', 4),
-        new Note('C#', 3),
-        new Note('E', 4),
+        new Note('A', 3, 'h'),
+        new Note('C#', 4, 'h'),
+        new Note('E', 4, 'h'),
       ]);
     } else if (state.input.isPressed('3')) {
       this.instrument.setFreqs([
-        new Note('B', 4),
-        new Note('D', 4),
-        new Note('F#', 4),
+        new Note('B', 3, 'h'),
+        new Note('D', 4, 'h'),
+        new Note('F#', 4, 'h'),
       ]);
     } else if (state.input.isPressed('4')) {
       this.instrument.setFreqs([
-        new Note('F#', 3),
-        new Note('A', 3),
-        new Note('C#', 3),
+        new Note('F#', 3, 'h'),
+        new Note('A', 3, 'h'),
+        new Note('C#', 2, 'h'),
       ]);
     } else if (state.input.isPressed('5')) {
       this.instrument.setFreqs([
-        new Note('G', 4),
-        new Note('B', 4),
-        new Note('D', 4),
+        new Note('G', 3, 'h'),
+        new Note('B', 3, 'h'),
+        new Note('D', 3, 'h'),
       ]);
     } else if (state.input.isPressed('6')) {
       this.instrument.setFreqs([
-        new Note('D', 3),
-        new Note('F#', 3),
-        new Note('A', 3),
+        new Note('D', 3, 'h'),
+        new Note('F#', 3, 'h'),
+        new Note('A', 2, 'h'),
       ]);
     } else if (state.input.isPressed('7')) {
       this.instrument.setFreqs([
-        new Note('G', 4),
-        new Note('B', 4),
-        new Note('D', 4),
+        new Note('G', 3, 'h'),
+        new Note('B', 3, 'h'),
+        new Note('D', 3, 'h'),
       ]);
     } else if (state.input.isPressed('8')) {
       this.instrument.setFreqs([
-        new Note('A', 5),
-        new Note('C#', 4),
-        new Note('E', 5),
+        new Note('A', 3, 'h'),
+        new Note('C#', 4, 'h'),
+        new Note('E', 3, 'h'),
       ]);
     }
     // tslint:enable:no-magic-numbers

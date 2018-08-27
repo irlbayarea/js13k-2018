@@ -4,6 +4,8 @@ const REST: string = 'R';
 const DOT: string = 'd';
 const SHARP: string = '#';
 const FLAT: string = 'b';
+const SEC_PER_MIN: number = 60;
+const BEATS_PER_MEASURE: number = 4;
 
 // tslint:disable:no-magic-numbers
 const noteValues: { [note: string]: number } = {
@@ -18,12 +20,12 @@ const noteValues: { [note: string]: number } = {
 
 // tslint:disable:no-magic-numbers
 const beatValues: { [beat: string]: number } = {
-  e: 1 / 8,
-  h: 1 / 2,
-  q: 1 / 2,
-  s: 1 / 16,
-  t: 1 / 32,
-  w: 1,
+  e: 1 / Math.pow(2, 3), // Eighth
+  h: 1 / Math.pow(2, 1), // Half
+  q: 1 / Math.pow(2, 2), // Quarter
+  s: 1 / Math.pow(2, 4), // Sixteenth
+  t: 1 / Math.pow(2, 5), // Thirty-second
+  w: 1 / Math.pow(2, 0), // Whole
 }; // tslint:enable:no-magic-numbers
 
 // tslint:disable:no-magic-numbers
@@ -74,6 +76,11 @@ export function stringToBeats(beatString: string) {
     : 0;
 }
 
+// Helper function
+export function str2Note(noteString: string): Note {
+  return new Note(...noteString.split('|'));
+}
+
 /*
 * Note Class
 * 
@@ -93,26 +100,59 @@ export class Note {
   public beats(): number {
     return stringToBeats(this.beat);
   }
+
+  public duration(tempo: number) {
+    return (SEC_PER_MIN / tempo) * this.beats() * BEATS_PER_MEASURE;
+  }
 }
+
+export class SheetMusic {
+  constructor(
+    public readonly tempo: number = 120,
+    public readonly registers: { [id: number]: Note[] }
+  ) {}
+
+  public numRegisters(): number {
+    return Object.keys(this.registers).length;
+  }
+}
+
 export class Instrument {
-  private readonly ons: OscillatorNode[] = [];
+  private ons: OscillatorNode[] = [];
   private readonly dn: WaveShaperNode = this.ac.createWaveShaper();
   private readonly gn: GainNode = this.ac.createGain();
   private readonly ad: AudioDestinationNode = this.ac.destination;
 
   constructor(
     private readonly ac: AudioContext,
-    private readonly numNotes = 6,
+    private numNotes = 6,
     private readonly oscType: OscillatorType = 'sawtooth'
   ) {
     this.ac = ac;
-    for (let i = 0; i < numNotes; i++) {
-      this.ons[i] = this.ac.createOscillator();
-      this.ons[i].type = this.oscType;
-      this.ons[i].connect(this.dn);
-      this.ons[i].start();
-    }
+    this.createRegisters(this.numNotes);
     this.dn.connect(this.gn);
+  }
+
+  public learnMusic(sm: SheetMusic) {
+    // Keeps track of time
+    const t: number[] = new Array(sm.numRegisters()).fill(this.ac.currentTime);
+
+    // Set number of registers required for this sheet music by this song
+    this.createRegisters(sm.numRegisters());
+
+    // Set the music
+    // For each register in the SheetMusic object...
+    Object.keys(sm.registers).forEach((vali: string, _) => {
+      // For each Note in the register...
+      sm.registers[+vali].forEach((valj: Note, j: number) => {
+        // Set frequency
+        this.ons[j].frequency.setValueAtTime(valj.freq(), t[j]);
+
+        // Advance time and set oscillator frequency to zero
+        t[j] += valj.beats();
+        this.ons[j].frequency.setValueAtTime(0, t[j]);
+      });
+    });
   }
 
   public setFreqs(notes: Note[], tempo: number = 120): void {
@@ -124,14 +164,16 @@ export class Instrument {
       );
       this.ons[i].frequency.setValueAtTime(
         0,
-        this.ac.currentTime + tempo / 2 / 2 / 2 / 2 / 2 / 2
+        // tslint:disable-next-line:no-magic-numbers
+        this.ac.currentTime + notes[i].duration(tempo)
       );
+
       this.ons[i].connect(this.dn);
     }
     // If any notes left out, set freq to 0 and disconnect from graph
     for (let i = Math.min(notes.length, this.numNotes); i < notes.length; i++) {
       this.ons[i].frequency.setValueAtTime(0, this.ac.currentTime);
-      this.ons[i].disconnect();
+      // this.ons[i].disconnect();
     }
   }
 
@@ -142,8 +184,15 @@ export class Instrument {
   public stop(): void {
     this.gn.disconnect(this.ad);
   }
-}
 
-// export class SheetMusic {
-//   constructor(public readonly tempo: number = 120) {}
-// }
+  private createRegisters(n: number) {
+    this.numNotes = n;
+    this.ons = [];
+    for (let i = 0; i < this.numNotes; i++) {
+      this.ons[i] = this.ac.createOscillator();
+      this.ons[i].type = this.oscType;
+      this.ons[i].connect(this.dn);
+      this.ons[i].start();
+    }
+  }
+}
