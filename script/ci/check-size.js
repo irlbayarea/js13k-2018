@@ -6,7 +6,7 @@ const maxFileSize = 1024 * 13;
 const message = `File size of "dist/release.zip" is ${fileSizeInBytes}/${maxFileSize} bytes (${(100 *
   fileSizeInBytes) /
   maxFileSize}) %`;
-if (fileSizeInBytes > 1024 * 13) {
+if (fileSizeInBytes > maxFileSize) {
   console.error(message);
   process.exit(1);
 } else {
