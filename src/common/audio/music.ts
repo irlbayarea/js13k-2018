@@ -1,3 +1,5 @@
+import { logDebug } from '../logger';
+
 // import { logDebug } from '../logger';
 
 const REST: string = 'R';
@@ -118,6 +120,19 @@ export class SheetMusic {
   }
 }
 
+export function str2SheetMusic(
+  songStr: string,
+  tempo: number = 120,
+  volume: number = 0.1
+): SheetMusic {
+  const lines = songStr.split('\n');
+  const registers: { [id: number]: Note[] } = [];
+  lines.forEach(line => {
+    logDebug(line);
+  });
+
+  return new SheetMusic(tempo, registers, volume);
+}
 export class Instrument {
   private readonly ons: OscillatorNode[] = [];
   private readonly dn: WaveShaperNode = this.ac.createWaveShaper();

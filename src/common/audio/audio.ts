@@ -14,7 +14,7 @@ export class AudioHandler {
 
   public playMusic(): void {
     if (!this.songisLearned) {
-      const tempo = 60;
+      const tempo = 120;
       const sm = new SheetMusic(tempo, {
         0: [
           str2Note('D|3|q'),
