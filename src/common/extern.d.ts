@@ -6,3 +6,8 @@
 interface CanvasRenderingContext2D {
   resetTransform(): void;
 }
+
+/**
+ * Allow importing png assets.
+ */
+declare module '*.png';
