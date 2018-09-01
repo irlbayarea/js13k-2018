@@ -1,8 +1,12 @@
-export const blues: string = `
-0: B ,2,qT | -, ,qT | B ,2,qT | C#,3,qT | -, ,qT | C#,3,qT | D ,3,qT | -, ,qT | D ,3,qT | C#,3,qT | -, ,qT | C#,3,qT | B ,2,qT | -, ,qT | B ,2,qT | C#,3,qT | -, ,qT | B ,2,qT | -, ,wdT
-1: E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | -, ,wdT
+export const mainTheme: string = `
 
-0: E ,3,qT | -, ,qT | E ,3,qT | F#,3,qT | -, ,qT | F#,3,qT | G ,3,qT | -, ,qT | G ,3,qT | F#,3,qT | -, ,qT | F#,3,qT | E ,3,qT | -, ,qT | E ,3,qT | F#,3,eT | -, ,hT | E ,3,eT | -, ,hT 
-1: A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,eT | -, ,hT | A ,2,eT | -, ,hT 
+0: B ,3,e ,0.125| D,4,e ,0.125| A,4,e ,0.125| G#,4,e ,0.125| E ,4,e ,0.125| F#,4,e ,0.125| D ,4,e ,0.125| F#,4,e ,0.125| B ,3,e ,0.125| D,4,e ,0.125| A,4,e ,0.125| G#,4,e ,0.125| E ,4,e ,0.125| F#,4,e ,0.125| D ,4,e ,0.125| F#,4,e 
+1: A ,2,qd                ,0.125| B ,2,qd                  ,0.125| F#,2,q          ,0.125| A ,2,qd                ,0.125| B ,2,qd                  ,0.125| E ,2,q          
+
+0: A ,3,e ,0.125| C,4,e ,0.125| G,4,e ,0.125| F#,4,e ,0.125| D ,4,e ,0.125| E ,4,e ,0.125| C ,4,e ,0.125| E ,4,e ,0.125| A ,3,e ,0.125| C,4,e ,0.125| G,4,e ,0.125| F#,4,e ,0.125| D ,4,e ,0.125| E ,4,e ,0.125| C ,4,e ,0.125| E ,4,e
+1: G ,2,qd                ,0.125| A ,2,qd                  ,0.125| E ,2,q          ,0.125| G ,2,qd                ,0.125| A ,2,qd                  ,0.125| A ,2,q          
+
+0: -, ,w
+1: -, ,w
 
 `;

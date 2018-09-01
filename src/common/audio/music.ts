@@ -95,7 +95,8 @@ export class Note {
   constructor(
     public readonly note: string = REST,
     public readonly octave: number = 0,
-    public readonly beat: string = 'q'
+    public readonly beat: string = 'q',
+    public readonly staccacoPercent: number = 0.1
   ) {}
 
   public freq(): number {
@@ -153,6 +154,15 @@ export function str2SheetMusic(
       const notes: Note[] = [];
       noteStrs.forEach((val: string, _) => {
         notes.push(new Note(...val.split(',')));
+        const lnote = notes[notes.length - 1];
+        if (lnote.staccacoPercent >= 1.0 || lnote.staccacoPercent <= 0.0) {
+          notes[notes.length - 1] = new Note(
+            lnote.note,
+            lnote.octave,
+            lnote.beat,
+            0.0
+          );
+        }
       });
       // Push the Note objects onto the proper register
       if (lineNo !== undefined) {

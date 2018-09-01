@@ -7,7 +7,7 @@ import {
   str2Note,
   str2SheetMusic,
 } from './music';
-import { blues } from './songs';
+import { mainTheme } from './songs';
 
 export class AudioHandler {
   private musicIsOn: boolean = false;
@@ -22,9 +22,9 @@ export class AudioHandler {
 
   public playMusic(): void {
     if (!this.songisLearned) {
-      const tempo = 160;
+      const tempo = 90;
 
-      const sm = str2SheetMusic(blues, tempo);
+      const sm = str2SheetMusic(mainTheme, tempo);
       this.instrument.learnMusic(sm);
       this.instrument.play();
       this.songisLearned = true;
