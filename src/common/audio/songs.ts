@@ -1,25 +1,8 @@
 export const blues: string = `
-0: B |2|q,B |2|q,C#|3|q,C#|3|q,B |2|q,B |2|q,C#|3|q,B |2|q,
-1: E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,
+0: B ,2,qT | -, ,qT | B ,2,qT | C#,3,qT | -, ,qT | C#,3,qT | D ,3,qT | -, ,qT | D ,3,qT | C#,3,qT | -, ,qT | C#,3,qT | B ,2,qT | -, ,qT | B ,2,qT | C#,3,qT | -, ,qT | B ,2,qT | -, ,wdT
+1: E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | E ,2,qT | -, ,qT | E ,2,qT | -, ,wdT
 
-0: R | |w,                                                 
-1: R | |q,E |2|q,G |2|q,G#|2|q,A |2|q,G#|2|q,G |2|q,E |2|q,
+0: E ,3,qT | -, ,qT | E ,3,qT | F#,3,qT | -, ,qT | F#,3,qT | G ,3,qT | -, ,qT | G ,3,qT | F#,3,qT | -, ,qT | F#,3,qT | E ,3,qT | -, ,qT | E ,3,qT | F#,3,eT | -, ,hT | E ,3,eT | -, ,hT 
+1: A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,qT | -, ,qT | A ,2,qT | A ,2,eT | -, ,hT | A ,2,eT | -, ,hT 
 
-0: B |2|q,B |2|q,C#|3|q,C#|3|q,B |2|q,B |2|q,C#|3|q,B |2|q,
-1: E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,
-
-0: R | |w,                                                 
-1: R | |q,E |2|q,G |2|q,G#|2|q,A |2|q,G#|2|q,G |2|q,E |2|q,
-
-0: E |4|q,E |4|q,F#|4|q,F#|4|q,E |4|q,E |4|q,F#|4|q,E |4|q,
-1: A |3|q,A |3|q,A |3|q,A |3|q,A |3|q,A |3|q,A |3|q,A |3|q,
-
-0: R | |w,                                                 
-1: R | |q,A |3|q,C |4|q,C#|4|q,B |4|q,C#|4|q,C |4|q,A |3|q,
-
-0: B |2|q,B |2|q,C#|3|q,C#|3|q,B |2|q,B |2|q,C#|3|q,B |2|q,
-1: E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,E |2|q,
-
-0: R | |w,                                                 
-1: R | |q,E |2|q,G |2|q,G#|2|q,A |2|q,G#|2|q,G |2|q,E |2|q,
 `;

@@ -1,5 +1,13 @@
 import { state } from '../../index';
-import { Instrument, Note, SheetMusic, str2Note } from './music';
+import { Instrument } from './instrument';
+// import { logDebug } from '../logger';
+import {
+  Note,
+  // SheetMusic,
+  str2Note,
+  str2SheetMusic,
+} from './music';
+import { blues } from './songs';
 
 export class AudioHandler {
   private musicIsOn: boolean = false;
@@ -14,39 +22,9 @@ export class AudioHandler {
 
   public playMusic(): void {
     if (!this.songisLearned) {
-      const tempo = 120;
-      const sm = new SheetMusic(tempo, {
-        0: [
-          str2Note('D|3|q'),
-          str2Note('A|3|q'),
-          str2Note('B|3|q'),
-          str2Note('F#|3|q'),
-          str2Note('G|3|q'),
-          str2Note('D|3|q'),
-          str2Note('G|3|q'),
-          str2Note('A|3|q'),
-        ],
-        1: [
-          str2Note('F#|4|q'),
-          str2Note('C#|4|q'),
-          str2Note('D|4|q'),
-          str2Note('A|3|q'),
-          str2Note('B|3|q'),
-          str2Note('F#|3|q'),
-          str2Note('B|3|q'),
-          str2Note('C#|4|q'),
-        ],
-        2: [
-          str2Note('A|4|q'),
-          str2Note('E|4|q'),
-          str2Note('F#|4|q'),
-          str2Note('C#|2|q'),
-          str2Note('D|3|q'),
-          str2Note('A|2|q'),
-          str2Note('D|3|q'),
-          str2Note('E|3|q'),
-        ],
-      });
+      const tempo = 160;
+
+      const sm = str2SheetMusic(blues, tempo);
       this.instrument.learnMusic(sm);
       this.instrument.play();
       this.songisLearned = true;
