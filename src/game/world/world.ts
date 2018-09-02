@@ -1,5 +1,5 @@
 import { spriteSheet } from '../../assets/sprite-listing';
-import { AudioHandler } from '../../common/audio/audio';
+// import { AudioHandler } from '../../common/audio/audio';
 import { Camera } from '../../common/graphics/camera';
 import { CircleDrawable, SpriteDrawable } from '../../common/graphics/drawable';
 import { Sprite } from '../../common/graphics/sprites';
@@ -46,7 +46,7 @@ export class World {
   private readonly entities: Entity[];
   private readonly player: Player;
   private readonly camera: Camera;
-  private readonly musicPlayer: AudioHandler;
+  // private readonly musicPlayer: AudioHandler;
   /**
    * Set Infinity to designate first tick.
    */
@@ -61,7 +61,7 @@ export class World {
     this.entities = [];
     this.player = new Player();
     this.camera = new Camera();
-    this.musicPlayer = new AudioHandler();
+    // this.musicPlayer = new AudioHandler();
     this.entities.push(this.player.entity);
     this.initializeLevel();
   }
@@ -129,7 +129,7 @@ export class World {
    * are poorly parametarized according to the delta, see `World.TICK_DELTA`.
    */
   private tick() {
-    this.musicPlayer.update();
+    // this.musicPlayer.update();
     this.handleCameraInput();
     this.player.update();
     this.entities.forEach(entity => {

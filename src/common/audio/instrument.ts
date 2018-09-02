@@ -1,32 +1,27 @@
-import { Note, SheetMusic } from './music';
+import { audioContext } from './audio';
+import { Sheet } from './music';
+import { Note } from './theory';
 
 export class Instrument {
   private readonly ons: OscillatorNode[] = [];
-  private readonly dn: WaveShaperNode = this.ac.createWaveShaper();
-  private readonly gns: GainNode[] = [];
-  private readonly ad: AudioDestinationNode = this.ac.destination;
-
+  private readonly gn: GainNode = audioContext.createGain();
+  private readonly ad: AudioDestinationNode = audioContext.destination;
   constructor(
-    private readonly ac: AudioContext,
-    private numRegisters = 1,
-    private readonly oscType: OscillatorType = 'sawtooth',
-    private volume: number = 0.1
+    private readonly otype: OscillatorType = 'sawtooth',
+    private nreg: number = 1
   ) {
-    this.ac = ac;
-    this.createRegisters(this.numRegisters);
+    // Set number of registers required for this sheet music by this song
+    this.createRegisters(nreg);
   }
 
   /*
     * Set instrument to play music defined in a SheetMusic object
     */
-  public learnMusic(sm: SheetMusic) {
+  public playSheet(sm: Sheet, dt: number = 0.0) {
     // Keeps track of time
-    const t0: number = this.ac.currentTime;
-    const t: number[] = new Array(sm.numRegisters()).fill(t0);
-
-    // Set number of registers required for this sheet music by this song
-    this.volume = sm.volume;
-    this.createRegisters(sm.numRegisters());
+    const t: number[] = new Array(sm.numRegisters()).fill(
+      audioContext.currentTime + dt
+    );
 
     // Set the music
     // For each register in the SheetMusic object...
@@ -44,70 +39,34 @@ export class Instrument {
 
         // Advance time and set oscillator frequency to zero
         t[i] += b;
-        this.ons[i].frequency.setValueAtTime(
-          0,
-          t[i] - b * valj.staccacoPercent
-        );
+        this.ons[i].frequency.setValueAtTime(0, t[i] - b * valj.sPct);
       });
     });
   }
 
-  /*
-    * Set the frequency to a particular note
-    */
-  public setFreqs(notes: Note[], tempo: number = 120): void {
-    // Set freq of given notes and connect to graph
-    for (let i = 0; i < Math.min(notes.length, this.numRegisters); i++) {
-      this.ons[i].frequency.setValueAtTime(
-        notes[i].freq(),
-        this.ac.currentTime
-      );
-      this.ons[i].frequency.setValueAtTime(
-        0,
-        // tslint:disable-next-line:no-magic-numbers
-        this.ac.currentTime + notes[i].duration(tempo)
-      );
-    }
-    // If any notes left out, set freq to 0 and set volume to 0
-    this.ons.forEach((on, i) => {
-      if (i >= Math.min(notes.length, this.numRegisters) && i < notes.length) {
-        on.frequency.setValueAtTime(0, this.ac.currentTime);
-        this.gns[i].gain.value = 0;
-        this.gns[i].disconnect(this.ad);
-      }
-    });
-  }
-
   public play(): void {
-    this.gns.forEach((gn, _) => {
-      gn.connect(this.ad);
-    });
+    this.gn.connect(this.ad);
   }
 
   public stop(): void {
-    this.gns.forEach((gn, _) => {
-      gn.disconnect(this.ad);
-    });
+    this.gn.disconnect(this.ad);
   }
 
   // Create Registers <=> Oscillators
   private createRegisters(n: number) {
     // Disconnect exisiting oscillators
-    // TODO: can I just remove them from the AudioContext?
     this.ons.forEach((on, _) => {
       on.disconnect();
     });
 
-    this.numRegisters = n;
+    this.nreg = n;
 
-    for (let i = 0; i < this.numRegisters; i++) {
-      this.ons[i] = this.ac.createOscillator();
-      this.ons[i].type = this.oscType;
-      this.gns[i] = this.ac.createGain();
-      this.gns[i].gain.value = this.volume;
-      this.dn.connect(this.gns[i]);
-      this.ons[i].connect(this.gns[i]);
+    // AudioContext -> Oscillators -> Gain Nodes -> WaveShape -> AudioDestination
+    for (let i = 0; i < this.nreg; i++) {
+      this.ons[i] = audioContext.createOscillator();
+      this.ons[i].type = this.otype;
       this.ons[i].start();
+      this.ons[i].connect(this.gn);
     }
   }
 }
