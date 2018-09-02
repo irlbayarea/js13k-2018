@@ -6,7 +6,7 @@ export class Sheet {
     public readonly registers: { [id: number]: Note[] }
   ) {}
 
-  public numRegisters(): number {
+  public nreg(): number {
     return Object.keys(this.registers).length;
   }
 
@@ -68,7 +68,7 @@ export function str2Sheet(songStr: string, tempo: number = 120): Sheet {
             lnote.note,
             lnote.octave,
             lnote.beat,
-            lnote.volume
+            lnote.vol
           );
         }
       });
@@ -86,7 +86,13 @@ export function str2Sheet(songStr: string, tempo: number = 120): Sheet {
   return new Sheet(tempo, registers);
 }
 
-export function shiftOctave(s: Sheet, oshift: number): Sheet {
+// volume, octave
+export function shift(
+  s: Sheet,
+  vset: number = 0,
+  oshift: number = 0,
+  sset: number = -1
+): Sheet {
   const newReg: { [id: number]: Note[] } = {};
   Object.keys(s.registers).forEach((vali, _) => {
     newReg[+vali] = [];
@@ -95,26 +101,8 @@ export function shiftOctave(s: Sheet, oshift: number): Sheet {
         c.note,
         +c.octave + (c.note !== REST ? oshift : 0),
         c.beat,
-        c.sPct,
-        c.volume
-      );
-    });
-  });
-
-  return new Sheet(s.tempo, newReg);
-}
-
-export function shiftVolume(s: Sheet, vshift: number): Sheet {
-  const newReg: { [id: number]: Note[] } = {};
-  Object.keys(s.registers).forEach((vali, _) => {
-    newReg[+vali] = [];
-    s.registers[+vali].forEach((c: Note, j) => {
-      newReg[+vali][j] = new Note(
-        c.note,
-        +c.octave,
-        c.beat,
-        c.sPct,
-        c.volume + (c.note !== REST ? vshift : 0)
+        sset < 0 ? c.sPct : sset,
+        c.note !== REST ? vset : 0
       );
     });
   });

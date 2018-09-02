@@ -2,7 +2,7 @@ import { Sheet } from './music';
 import { audioContext } from './themesong';
 import { Note } from './theory';
 
-export class Instrument {
+export class GameSound {
   private readonly ons: OscillatorNode[] = [];
   private readonly gn: GainNode = audioContext.createGain();
   private readonly ad: AudioDestinationNode = audioContext.destination;
@@ -13,7 +13,7 @@ export class Instrument {
     // Start out muted (so we don't kill everyone's ears)
     this.gn.gain.value = 0;
     // Set number of registers required for this sheet music by this song
-    this.createRegisters(nreg);
+    this.register(nreg);
   }
 
   /*
@@ -25,27 +25,22 @@ export class Instrument {
     t0: number = audioContext.currentTime
   ) {
     // Keeps track of time
-    const t: number[] = new Array(sm.numRegisters()).fill(t0 + dt);
+    const t: number[] = new Array(sm.nreg()).fill(t0 + dt);
 
     // Set the music
     // For each register in the SheetMusic object...
-    Object.keys(sm.registers).forEach((vali: string, i: number) => {
+    Object.keys(sm.registers).forEach((ri: string, i: number) => {
       // For each Note in the register...
-      sm.registers[+vali].forEach((valj: Note, _) => {
+      sm.registers[+ri].forEach((nj: Note, _) => {
         // Set frequency
-        const f = valj.freq();
-        const b = valj.duration(sm.tempo);
-        if (f <= 0) {
-          this.ons[i].frequency.setValueAtTime(0, t[i]);
-          this.gn.gain.setValueAtTime(0, t[i]);
-        } else {
-          this.ons[i].frequency.setValueAtTime(f, t[i]);
-          this.gn.gain.setValueAtTime(valj.volume, t[i]);
-        }
+        const f = nj.freq();
+        const b = nj.duration(sm.tempo);
+        this.ons[i].frequency.setValueAtTime(f <= 0 ? 0 : f, t[i]);
+        this.gn.gain.setValueAtTime(f <= 0 ? 0 : nj.vol, t[i]);
 
         // Advance time and set oscillator frequency to zero
         t[i] += b;
-        this.ons[i].frequency.setValueAtTime(0, t[i] - b * valj.sPct);
+        this.ons[i].frequency.setValueAtTime(0, t[i] - b * nj.sPct);
       });
     });
   }
@@ -59,7 +54,7 @@ export class Instrument {
   }
 
   // Create Registers <=> Oscillators
-  private createRegisters(n: number) {
+  private register(n: number) {
     // Disconnect exisiting oscillators
     this.ons.forEach((on, _) => {
       on.disconnect();

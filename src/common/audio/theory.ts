@@ -8,7 +8,7 @@ export const BEATS_PER_MEASURE: number = 4;
 export const A440: number = 440;
 
 // tslint:disable:no-magic-numbers
-const noteValues: { [note: string]: number } = {
+const NOTE_VALS: { [note: string]: number } = {
   A: 69,
   B: 71,
   C: 60,
@@ -19,7 +19,7 @@ const noteValues: { [note: string]: number } = {
 }; // tslint:enable:no-magic-numbers
 
 // tslint:disable:no-magic-numbers
-const beatValues: { [beat: string]: number } = {
+const BEAT_VALS: { [beat: string]: number } = {
   e: Math.pow(2, -3), // Eighth
   h: Math.pow(2, -1), // Half
   q: Math.pow(2, -2), // Quarter
@@ -34,23 +34,23 @@ const beatValues: { [beat: string]: number } = {
 *
 * Note can be letter plus sharp(#) or flat(b) symbol
 */
-export function noteToFreq(note: string = REST, octave: number = 0): number {
-  if (note === REST) {
+export function note2freq(n: string = REST, o: number = 0): number {
+  if (n === REST) {
     return 0;
   } else {
-    const base: string = note.substr(0, 1);
+    const b: string = n.substr(0, 1);
     let m: number =
-      Object.keys(noteValues).find(key => base === key) !== undefined
-        ? noteValues[base]
-        : noteValues.C;
-    if (note.length > 1) {
-      if (note.substr(1, 1) === SHARP) {
+      Object.keys(NOTE_VALS).find(key => b === key) !== undefined
+        ? NOTE_VALS[b]
+        : NOTE_VALS.C;
+    if (n.length > 1) {
+      if (n.substr(1, 1) === SHARP) {
         m += 1;
-      } else if (note.substr(1, 1) === FLAT) {
+      } else if (n.substr(1, 1) === FLAT) {
         m -= 1;
       }
     }
-    return Math.pow(2, (m - noteValues.A) / 12 + (octave - 4)) * A440;
+    return Math.pow(2, (m - NOTE_VALS.A) / 12 + (o - 4)) * A440;
   }
 } // tslint:enable:no-magic-numbers
 
@@ -60,23 +60,21 @@ export function noteToFreq(note: string = REST, octave: number = 0): number {
 * Example: 'qdd' reqpresents a double-dotted quarter note,
 *           and would return 1/4 + (1/4)(1/2) + (1/4)(1/2)(1/2) = 7/16
 */
-export function stringToBeats(beatString: string) {
+export function str2beat(bstr: string) {
   // First character is the base beat value
-  const beat: string = beatString.substr(0, 1);
-  let tripletType = false;
+  const b: string = bstr.substr(0, 1);
+  let trip = false; // is a triplet note?
 
   // Count the number of DOT characters
-  let dots: number = 0;
-  beatString.split('').forEach((val, _) => {
-    tripletType = tripletType || val === TRIPLET;
-    dots += val === DOT ? 1 : 0;
+  let d: number = 0;
+  bstr.split('').forEach((c, _) => {
+    trip = trip || c === TRIPLET;
+    d += c === DOT ? 1 : 0;
   });
 
   // Calculate total length of beat
-  return Object.keys(beatValues).find(key => beat === key) !== undefined
-    ? beatValues[beat] *
-        (2 - 1 / Math.pow(2, dots)) *
-        (tripletType ? 2 / (2 + 1) : 1)
+  return Object.keys(BEAT_VALS).find(key => b === key) !== undefined
+    ? BEAT_VALS[b] * (2 - 1 / Math.pow(2, d)) * (trip ? 2 / (2 + 1) : 1)
     : 0;
 }
 
@@ -91,15 +89,15 @@ export class Note {
     public readonly octave: number = 0,
     public readonly beat: string = 'q',
     public readonly sPct: number = 0.001, // "staccato percet"
-    public readonly volume: number = 1
+    public readonly vol: number = 1
   ) {}
 
   public freq(): number {
-    return noteToFreq(this.note.trim(), this.octave);
+    return note2freq(this.note.trim(), this.octave);
   }
 
   public beats(): number {
-    return stringToBeats(this.beat.trim());
+    return str2beat(this.beat.trim());
   }
 
   public duration(tempo: number) {

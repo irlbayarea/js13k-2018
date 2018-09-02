@@ -1,4 +1,5 @@
-import { playMusic } from './common/audio/themesong';
+import { makesomenoise } from './common/audio/soundeffects';
+import { play } from './common/audio/themesong';
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
 import { Vec2 } from './common/math/vec2';
@@ -40,5 +41,6 @@ const world = new World();
 
 // Start the game driver.
 timer.subscribe(renderFrames);
-timer.subscribe(playMusic);
+timer.subscribe(play);
+timer.subscribe(makesomenoise);
 window.requestAnimationFrame(timer.update);
