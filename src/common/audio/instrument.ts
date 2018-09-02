@@ -10,6 +10,8 @@ export class Instrument {
     private readonly otype: OscillatorType = 'sawtooth',
     private nreg: number = 1
   ) {
+    // Start out muted (so we don't kill everyone's ears)
+    this.gn.gain.value = 0;
     // Set number of registers required for this sheet music by this song
     this.createRegisters(nreg);
   }
@@ -69,8 +71,8 @@ export class Instrument {
     for (let i = 0; i < this.nreg; i++) {
       this.ons[i] = audioContext.createOscillator();
       this.ons[i].type = this.otype;
-      this.ons[i].start();
       this.ons[i].connect(this.gn);
+      this.ons[i].start();
     }
   }
 }

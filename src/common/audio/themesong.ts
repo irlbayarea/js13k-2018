@@ -58,9 +58,9 @@ export const mainTheme: SongHandler = new SongHandler(
   [
     shiftVolume(shiftOctave(mainTheme00Sheet, +0), -0.5), // 0 - LEAD
     shiftVolume(shiftOctave(mainTheme00Sheet, -1), -0.5), // 1 - LEAD
-    shiftVolume(shiftOctave(mainTheme10Sheet, +0), -0.5), // 2 - RHYTHM
+    shiftVolume(shiftOctave(mainTheme10Sheet, +0), -0.75), // 2 - RHYTHM
     shiftVolume(shiftOctave(mainTheme11Sheet, +1), -0.75), // 3 - RHYTHM
-    shiftVolume(shiftOctave(mainTheme10Sheet, +1), -0.5), // 4 - RHYTHM
+    shiftVolume(shiftOctave(mainTheme10Sheet, +1), -0.75), // 4 - RHYTHM
   ],
   {
     0: [0, 1, 0, 1],
