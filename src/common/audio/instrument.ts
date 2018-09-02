@@ -1,5 +1,5 @@
-import { audioContext } from './audio';
 import { Sheet } from './music';
+import { audioContext } from './themesong';
 import { Note } from './theory';
 
 export class Instrument {
@@ -17,11 +17,13 @@ export class Instrument {
   /*
     * Set instrument to play music defined in a SheetMusic object
     */
-  public playSheet(sm: Sheet, dt: number = 0.0) {
+  public playSheet(
+    sm: Sheet,
+    dt: number = 0.0,
+    t0: number = audioContext.currentTime
+  ) {
     // Keeps track of time
-    const t: number[] = new Array(sm.numRegisters()).fill(
-      audioContext.currentTime + dt
-    );
+    const t: number[] = new Array(sm.numRegisters()).fill(t0 + dt);
 
     // Set the music
     // For each register in the SheetMusic object...
@@ -33,8 +35,10 @@ export class Instrument {
         const b = valj.duration(sm.tempo);
         if (f <= 0) {
           this.ons[i].frequency.setValueAtTime(0, t[i]);
+          this.gn.gain.setValueAtTime(0, t[i]);
         } else {
           this.ons[i].frequency.setValueAtTime(f, t[i]);
+          this.gn.gain.setValueAtTime(valj.volume, t[i]);
         }
 
         // Advance time and set oscillator frequency to zero

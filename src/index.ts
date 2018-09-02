@@ -40,6 +40,5 @@ const world = new World();
 
 // Start the game driver.
 timer.subscribe(renderFrames);
-// timer.subscribe(playMusic);
-playMusic();
+timer.subscribe(playMusic);
 window.requestAnimationFrame(timer.update);

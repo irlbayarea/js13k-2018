@@ -103,3 +103,21 @@ export function shiftOctave(s: Sheet, oshift: number): Sheet {
 
   return new Sheet(s.tempo, newReg);
 }
+
+export function shiftVolume(s: Sheet, vshift: number): Sheet {
+  const newReg: { [id: number]: Note[] } = {};
+  Object.keys(s.registers).forEach((vali, _) => {
+    newReg[+vali] = [];
+    s.registers[+vali].forEach((c: Note, j) => {
+      newReg[+vali][j] = new Note(
+        c.note,
+        +c.octave,
+        c.beat,
+        c.sPct,
+        c.volume + (c.note !== REST ? vshift : 0)
+      );
+    });
+  });
+
+  return new Sheet(s.tempo, newReg);
+}
