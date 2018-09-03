@@ -1,4 +1,5 @@
 import { state } from './../../index';
+import { audioContext } from './audio';
 import { Sheet, shift, str2Sheet } from './music';
 import { GameSound } from './sound-effects';
 
@@ -96,9 +97,15 @@ const themeSong: Conductor = new Conductor(
   }
 ); // tslint:enable:no-magic-numbers
 
+themeSong.loops = false;
+export const musicStartKey = 'M';
+export const musicStopKey = 'N';
+
 export function playMusic(time: number): void {
-  if (state.input.isPressed('M') || themeSong.loops) {
+  if (state.input.isPressed(musicStartKey)) {
     play(themeSong, time);
+  } else if (state.input.isPressed(musicStopKey)) {
+    stop(themeSong, audioContext.currentTime + 0.001); // tslint:disable-line:no-magic-numbers
   }
 }
 
@@ -135,9 +142,21 @@ function play(music: Conductor, time: number) {
     Object.keys(music.ins).forEach((ini: string, _) => {
       music.ins[+ini].play();
     });
-  } else if (music.loops && time >= music.startTime + music.dur() * ms2s) {
-    music.startTime = time;
+  } else if (time >= music.startTime + music.dur() * ms2s) {
     music.isPlaying = false;
-    play(music, time);
+
+    if (music.loops) {
+      music.startTime = time;
+      play(music, time);
+    }
+  }
+}
+
+function stop(music: Conductor, t0: number) {
+  if (music.isPlaying) {
+    music.isPlaying = false;
+    Object.keys(music.ins).forEach((ini: string, _) => {
+      music.ins[+ini].stop(t0);
+    });
   }
 }

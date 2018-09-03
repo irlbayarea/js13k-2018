@@ -1,5 +1,4 @@
 import { IOncePerPress, oncePerPress } from '../input/input';
-import { logDebug } from '../logger';
 import { audioContext } from './audio';
 import { Sheet } from './music';
 import { Note } from './theory';
@@ -79,8 +78,13 @@ export class GameSound implements IOncePerPress {
     this.gn.connect(this.ad);
   }
 
-  public stop(): void {
+  public stop(t0: number): void {
     this.gn.disconnect(this.ad);
+    this.gn.gain.setValueAtTime(0, t0);
+    this.ons.forEach((on, _) => {
+      on.frequency.cancelScheduledValues(t0);
+      on.frequency.setValueAtTime(0, t0);
+    });
   }
 }
 
@@ -95,8 +99,6 @@ const pewpew: GameSound = new GameSound(
   [642, 642 * 2, 642 / 2],
   fireKey
 ); // tslint:enable:no-magic-numbers
-
-logDebug(`pewpew : ${pewpew}`);
 
 // Play a Laser (l) sound while pressing a key (k)
 export function fireLaser() {
