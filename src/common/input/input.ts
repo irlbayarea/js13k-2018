@@ -1,3 +1,4 @@
+import { state } from './../../index';
 /**
  * The Input class handles application input. This clas may be used to check if
  * a key is currently pressed.
@@ -58,5 +59,28 @@ class InputEvent {
   constructor(public readonly key: string, public readonly down: boolean) {
     this.key = key;
     this.down = down;
+  }
+}
+
+/*
+ Interface for implementing objects with events that should only happen while a button is pressed
+*/
+export interface IOncePerPress {
+  keyDown: boolean;
+  key: string;
+  keyDownEvent(t0: number): void;
+  keyUpEvent(t0: number): void;
+}
+
+/*
+* Function for executing events that should happen only once per button press
+*/
+export function oncePerPress(l: IOncePerPress, t0: number) {
+  if (state.input.isPressed(l.key) && !l.keyDown) {
+    l.keyDown = true;
+    l.keyDownEvent(t0);
+  } else if (!state.input.isPressed(l.key) && l.keyDown) {
+    l.keyDown = false;
+    l.keyUpEvent(t0);
   }
 }
