@@ -73,7 +73,7 @@ export const themeConductor: Conductor = new Conductor(
   }
 ); // tslint:enable:no-magic-numbers
 
-export function play(time: number): void {
+export function playMusic(time: number): void {
   if (!themeConductor.isPlaying) {
     themeConductor.isPlaying = true;
     themeConductor.startTime = time;
@@ -112,6 +112,6 @@ export function play(time: number): void {
   ) {
     themeConductor.startTime = time;
     themeConductor.isPlaying = false;
-    play(time);
+    playMusic(time);
   }
 }

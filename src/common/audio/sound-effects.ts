@@ -27,17 +27,17 @@ export class Laser {
 export const fireKey: string = 'P';
 
 const pewpew: Laser = new Laser('sine');
-const pippip: Laser = new Laser('square', pewpew.f * 2); // tslint:disable-line:no-magic-numbers
-const powpow: Laser = new Laser('sine', pewpew.f / 2); // tslint:disable-line:no-magic-numbers
+const pippip: Laser = new Laser('square', pewpew.f * 2);
+const powpow: Laser = new Laser('sine', pewpew.f / 2);
 
-export function fire() {
+export function fireLaser() {
   // Pew Pew!
   shoot(pewpew, fireKey);
   shoot(powpow, fireKey);
   shoot(pippip, fireKey);
 }
 
-// Play a Laser (l) sound by pressing a key (k)
+// Play a Laser (l) sound while pressing a key (k)
 function shoot(l: Laser, k: string) {
   const t0: number = audioContext.currentTime;
   if (state.input.isPressed(k) && !l.keyDown) {

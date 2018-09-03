@@ -1,5 +1,5 @@
-import { fire, fireKey } from './common/audio/sound-effects';
-import { play } from './common/audio/theme';
+import { fireKey, fireLaser } from './common/audio/sound-effects';
+import { playMusic } from './common/audio/theme';
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
 import { Vec2 } from './common/math/vec2';
@@ -46,6 +46,6 @@ const world = new World();
 
 // Start the game driver.
 timer.subscribe(renderFrames);
-timer.subscribe(play);
-timer.subscribe(fire);
+timer.subscribe(playMusic);
+timer.subscribe(fireLaser);
 window.requestAnimationFrame(timer.update);
