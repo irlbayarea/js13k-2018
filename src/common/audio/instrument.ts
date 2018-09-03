@@ -8,7 +8,7 @@ export class Instrument {
   private readonly ad: AudioDestinationNode = audioContext.destination;
   constructor(
     private readonly otype: OscillatorType = 'sawtooth',
-    private nreg: number = 1
+    private readonly nreg: number = 1
   ) {
     // Start out muted (so we don't kill everyone's ears)
     this.gn.gain.setValueAtTime(0, 0);
