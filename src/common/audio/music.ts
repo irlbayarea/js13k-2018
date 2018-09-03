@@ -86,12 +86,13 @@ export function str2Sheet(songStr: string, tempo: number = 120): Sheet {
   return new Sheet(tempo, registers);
 }
 
-// volume, octave
+// volume, octave, staccato, note steps
 export function shift(
   s: Sheet,
   vset: number = 0,
   oshift: number = 0,
-  sset: number = -1
+  sset: number = -1,
+  nshift: number = 0
 ): Sheet {
   const newReg: { [id: number]: Note[] } = {};
   Object.keys(s.registers).forEach((vali, _) => {
@@ -102,7 +103,8 @@ export function shift(
         +c.octave + (c.note !== REST ? oshift : 0),
         c.beat,
         sset < 0 ? c.sPct : sset,
-        c.note !== REST ? vset : 0
+        c.note !== REST ? vset : 0,
+        c.shift + nshift
       );
     });
   });

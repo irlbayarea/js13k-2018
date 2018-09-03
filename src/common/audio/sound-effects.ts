@@ -1,6 +1,6 @@
-import { state } from '../../index';
+import { ISinglePress, singlePresssEvent } from '../input/input';
 import { audioContext } from './theme';
-export class Laser {
+export class SoundEffect implements ISinglePress {
   public readonly on: OscillatorNode = audioContext.createOscillator();
   public readonly wn: WaveShaperNode = audioContext.createWaveShaper();
   public readonly gn: GainNode = audioContext.createGain();
@@ -22,31 +22,29 @@ export class Laser {
     this.wn.connect(this.gn);
     this.gn.connect(this.ad);
   }
+
+  public keyDownEvent(t0: number) {
+    this.on.frequency.setTargetAtTime(this.f, t0, this.onC);
+    this.gn.gain.setTargetAtTime(1, t0, this.onC);
+  }
+
+  public keyUpEvent(t0: number) {
+    this.on.frequency.setTargetAtTime(0, t0, this.offC);
+    this.gn.gain.setTargetAtTime(0, t0, this.offC);
+  }
 }
 
 export const fireKey: string = 'P';
 
-const pewpew: Laser = new Laser('sine');
-const pippip: Laser = new Laser('square', pewpew.f * 2);
-const powpow: Laser = new Laser('sine', pewpew.f / 2);
-
-export function fireLaser() {
-  // Pew Pew!
-  shoot(pewpew, fireKey);
-  shoot(powpow, fireKey);
-  shoot(pippip, fireKey);
-}
+const pewpew: SoundEffect = new SoundEffect('sine');
+const pippip: SoundEffect = new SoundEffect('square', pewpew.f * 2);
+const powpow: SoundEffect = new SoundEffect('sine', pewpew.f / 2);
 
 // Play a Laser (l) sound while pressing a key (k)
-function shoot(l: Laser, k: string) {
+export function fireLaser() {
+  // Pew Pew!
   const t0: number = audioContext.currentTime;
-  if (state.input.isPressed(k) && !l.keyDown) {
-    l.keyDown = true;
-    l.on.frequency.setTargetAtTime(l.f, t0, l.onC);
-    l.gn.gain.setTargetAtTime(1, t0, l.onC);
-  } else if (!state.input.isPressed(k) && l.keyDown) {
-    l.keyDown = false;
-    l.on.frequency.setTargetAtTime(0, t0, l.offC);
-    l.gn.gain.setTargetAtTime(0, t0, l.offC);
-  }
+  singlePresssEvent(pewpew, fireKey, t0);
+  singlePresssEvent(powpow, fireKey, t0);
+  singlePresssEvent(pippip, fireKey, t0);
 }

@@ -2,7 +2,7 @@ import { Sheet } from './music';
 import { audioContext } from './theme';
 import { Note } from './theory';
 
-export class GameSound {
+export class Instrument {
   private readonly ons: OscillatorNode[] = [];
   private readonly gn: GainNode = audioContext.createGain();
   private readonly ad: AudioDestinationNode = audioContext.destination;
@@ -13,7 +13,18 @@ export class GameSound {
     // Start out muted (so we don't kill everyone's ears)
     this.gn.gain.setValueAtTime(0, 0);
     // Set number of registers required for this sheet music by this song
-    this.register(nreg);
+    // Disconnect exisiting oscillators
+    this.ons.forEach((on, _) => {
+      on.disconnect();
+    });
+
+    // AudioContext -> Oscillators -> Gain Nodes -> WaveShape -> AudioDestination
+    for (let i = 0; i < this.nreg; i++) {
+      this.ons[i] = audioContext.createOscillator();
+      this.ons[i].type = this.otype;
+      this.ons[i].connect(this.gn);
+      this.ons[i].start();
+    }
   }
 
   /*
@@ -54,23 +65,5 @@ export class GameSound {
 
   public stop(): void {
     this.gn.disconnect(this.ad);
-  }
-
-  // Create Registers <=> Oscillators
-  private register(n: number) {
-    // Disconnect exisiting oscillators
-    this.ons.forEach((on, _) => {
-      on.disconnect();
-    });
-
-    this.nreg = n;
-
-    // AudioContext -> Oscillators -> Gain Nodes -> WaveShape -> AudioDestination
-    for (let i = 0; i < this.nreg; i++) {
-      this.ons[i] = audioContext.createOscillator();
-      this.ons[i].type = this.otype;
-      this.ons[i].connect(this.gn);
-      this.ons[i].start();
-    }
   }
 }
