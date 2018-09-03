@@ -65,7 +65,7 @@ class InputEvent {
 /*
  Interface for implementing objects with events that should only happen while a button is pressed
 */
-export interface IWhilePressed {
+export interface IPressed {
   keyDown: boolean;
   key: string;
   keyDownEvent(t0: number): void;
@@ -75,7 +75,7 @@ export interface IWhilePressed {
 /*
 * Function for executing events that should happen only while a button is pressed
 */
-export function whilePressed(l: IWhilePressed, t0: number) {
+export function whilePressed(l: IPressed, t0: number) {
   if (state.input.isPressed(l.key) && !l.keyDown) {
     l.keyDown = true;
     l.keyDownEvent(t0);

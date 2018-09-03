@@ -1,8 +1,8 @@
-import { IWhilePressed, whilePressed } from '../input/input';
+import { IPressed, whilePressed } from '../input/input';
 import { audioContext } from './theme';
 
 export const fireKey: string = 'P';
-export class SoundEffect implements IWhilePressed {
+export class SoundEffect implements IPressed {
   public readonly on: OscillatorNode = audioContext.createOscillator();
   public readonly wn: WaveShaperNode = audioContext.createWaveShaper();
   public readonly gn: GainNode = audioContext.createGain();
