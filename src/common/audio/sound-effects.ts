@@ -1,37 +1,52 @@
 import { state } from '../../index';
 import { audioContext } from './theme';
+export class Laser {
+  public readonly on: OscillatorNode = audioContext.createOscillator();
+  public readonly wn: WaveShaperNode = audioContext.createWaveShaper();
+  public readonly gn: GainNode = audioContext.createGain();
+  public readonly ad: AudioDestinationNode = audioContext.destination;
 
-let keyDown = false;
+  public keyDown: boolean = false;
 
-const onTimeConst: number = 0.0015;
-const offTimeConst: number = 0.15;
-const laserFreq: number = 642;
+  constructor(
+    ltype: OscillatorType = 'square',
+    public readonly f: number = 642,
+    public readonly onC: number = 0.0015,
+    public readonly offC: number = 0.15
+  ) {
+    this.on.frequency.value = f;
+    this.on.type = ltype;
+    this.on.start();
+    this.on.connect(this.wn);
+    this.gn.gain.setValueAtTime(0, audioContext.currentTime);
+    this.wn.connect(this.gn);
+    this.gn.connect(this.ad);
+  }
+}
 
-const on: OscillatorNode = audioContext.createOscillator();
-on.frequency.value = laserFreq;
-on.type = 'square';
-on.start();
-const wn: WaveShaperNode = audioContext.createWaveShaper();
-on.connect(wn);
-const gn: GainNode = audioContext.createGain();
-gn.gain.setValueAtTime(0, audioContext.currentTime);
-wn.connect(gn);
-const ad: AudioDestinationNode = audioContext.destination;
-gn.connect(ad);
+export const fireKey: string = 'P';
 
-export function makeSomeNoise() {
+const pewpew: Laser = new Laser('sine');
+const pippip: Laser = new Laser('square', pewpew.f * 2); // tslint:disable-line:no-magic-numbers
+const powpow: Laser = new Laser('sine', pewpew.f / 2); // tslint:disable-line:no-magic-numbers
+
+export function fire() {
   // Pew Pew!
-  if (state.input.isPressed('P') && !keyDown) {
-    keyDown = true;
-    on.frequency.setTargetAtTime(
-      laserFreq,
-      audioContext.currentTime,
-      onTimeConst
-    );
-    gn.gain.setTargetAtTime(1, audioContext.currentTime, onTimeConst);
-  } else if (!state.input.isPressed('P') && keyDown) {
-    keyDown = false;
-    on.frequency.setTargetAtTime(0, audioContext.currentTime, offTimeConst);
-    gn.gain.setTargetAtTime(0, audioContext.currentTime, offTimeConst);
+  shoot(pewpew, fireKey);
+  shoot(powpow, fireKey);
+  shoot(pippip, fireKey);
+}
+
+// Play a Laser (l) sound by pressing a key (k)
+function shoot(l: Laser, k: string) {
+  const t0: number = audioContext.currentTime;
+  if (state.input.isPressed(k) && !l.keyDown) {
+    l.keyDown = true;
+    l.on.frequency.setTargetAtTime(l.f, t0, l.onC);
+    l.gn.gain.setTargetAtTime(1, t0, l.onC);
+  } else if (!state.input.isPressed(k) && l.keyDown) {
+    l.keyDown = false;
+    l.on.frequency.setTargetAtTime(0, t0, l.offC);
+    l.gn.gain.setTargetAtTime(0, t0, l.offC);
   }
 }

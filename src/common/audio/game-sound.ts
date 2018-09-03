@@ -2,7 +2,6 @@ import { Sheet } from './music';
 import { audioContext } from './theme';
 import { Note } from './theory';
 
-// const decayConst: number = 0.001;
 export class GameSound {
   private readonly ons: OscillatorNode[] = [];
   private readonly gn: GainNode = audioContext.createGain();

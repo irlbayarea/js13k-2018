@@ -1,4 +1,4 @@
-import { makeSomeNoise } from './common/audio/sound-effects';
+import { fire, fireKey } from './common/audio/sound-effects';
 import { play } from './common/audio/theme';
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
@@ -29,6 +29,11 @@ function renderFrames(time: number) {
     // tslint:disable-next-line:no-magic-numbers
     new Vec2(20, state.draw.canvas.height - 20)
   );
+  state.draw.text(
+    `Press ${fireKey} to fire your laser!`,
+    // tslint:disable-next-line:no-magic-numbers
+    new Vec2(state.draw.canvas.width - 150, state.draw.canvas.height - 20)
+  );
 
   world.update(time / aSecondInMs);
   world.render();
@@ -42,5 +47,5 @@ const world = new World();
 // Start the game driver.
 timer.subscribe(renderFrames);
 timer.subscribe(play);
-timer.subscribe(makeSomeNoise);
+timer.subscribe(fire);
 window.requestAnimationFrame(timer.update);
