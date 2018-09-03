@@ -63,22 +63,23 @@ class InputEvent {
 }
 
 /*
- Interface for implementing objects with events that should only happen once per button press
+ Interface for implementing objects with events that should only happen while a button is pressed
 */
-export interface ISinglePress {
+export interface IWhilePressed {
   keyDown: boolean;
+  key: string;
   keyDownEvent(t0: number): void;
   keyUpEvent(t0: number): void;
 }
 
 /*
-* Function for executing events that should only happen once per button press
+* Function for executing events that should happen only while a button is pressed
 */
-export function singlePresssEvent(l: ISinglePress, k: string, t0: number) {
-  if (state.input.isPressed(k) && !l.keyDown) {
+export function whilePressed(l: IWhilePressed, t0: number) {
+  if (state.input.isPressed(l.key) && !l.keyDown) {
     l.keyDown = true;
     l.keyDownEvent(t0);
-  } else if (!state.input.isPressed(k) && l.keyDown) {
+  } else if (!state.input.isPressed(l.key) && l.keyDown) {
     l.keyDown = false;
     l.keyUpEvent(t0);
   }
