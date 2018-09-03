@@ -158,7 +158,8 @@ export function playMusic(t0: number): void {
     state.input.isPressed(musicStartKey)
   ) {
     themeSong.play(t0);
-  } else if (state.input.isPressed(musicStopKey)) {
+  }
+  if (state.input.isPressed(musicStopKey)) {
     themeSong.stop(audioContext.currentTime + 0.001); // tslint:disable-line:no-magic-numbers
   }
 }
