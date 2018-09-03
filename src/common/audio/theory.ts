@@ -5,6 +5,7 @@ export const SHARP: string = '#';
 export const FLAT: string = 'b';
 export const SEC_PER_MIN: number = 60;
 export const BEATS_PER_MEASURE: number = 4;
+export const MILLISEC_TO_SEC = 1000; // Milliseconds to Seconds
 
 // tslint:disable:no-magic-numbers
 const NOTE_VALS: { [note: string]: number } = {

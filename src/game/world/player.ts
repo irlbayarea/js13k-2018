@@ -10,11 +10,14 @@ export class Player {
   public readonly entity: Entity;
 
   constructor() {
-    const playerWidth = 24;
+    const playerWidth = 32;
     // TODO: disable this when the magic has been lost.
     // tslint:disable:no-magic-numbers
     const playerStartPosition = new Vec2(200, 200);
-    const playerSprite = new Sprite(spriteSheet, new Rectangle(16, 16, 0, 0));
+    const playerSprite = new Sprite(
+      spriteSheet,
+      new Rectangle(16, 16, 3 * 16, 2 * 16)
+    );
     this.entity = new Entity(
       playerStartPosition,
       Vec2.zero(),

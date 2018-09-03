@@ -79,12 +79,15 @@ export class World {
     this.entities.push(randoEntityMaker(new Vec2(100, 250)));
     this.entities.push(randoEntityMaker(new Vec2(500, 150)));
 
-    const testSprite = new Sprite(spriteSheet, new Rectangle(16, 16, 16, 16));
+    const testSprite = new Sprite(
+      spriteSheet,
+      new Rectangle(16, 16, 16 * 2, 16 * 1)
+    );
     this.entities.push(
       new Entity(
         new Vec2(100, 100),
         Vec2.zero(),
-        new SpriteDrawable(testSprite, 16)
+        new SpriteDrawable(testSprite, 16 * 4)
       )
     );
   }

@@ -9,7 +9,7 @@ export class GameSound implements IOncePerPress {
   public readonly gn: GainNode = audioContext.createGain();
   public readonly ad: AudioDestinationNode = audioContext.destination;
 
-  public keyDown: boolean = false;
+  public keysDown: { [k: string]: boolean } = { '': false };
 
   constructor(
     public readonly numOsc: number = 1,
@@ -17,7 +17,7 @@ export class GameSound implements IOncePerPress {
     public readonly onC: number[] = [0.0015], // tslint:disable-line:no-magic-numbers
     public readonly offC: number[] = [0.15], // tslint:disable-line:no-magic-numbers
     public readonly freq: number[] = [642], // tslint:disable-line:no-magic-numbers
-    public readonly key: string = ''
+    public readonly keys: string[] = ['']
   ) {
     for (let i = 0; i < this.numOsc; i++) {
       this.ons[i] = audioContext.createOscillator();
@@ -31,18 +31,22 @@ export class GameSound implements IOncePerPress {
     this.gn.connect(this.ad);
   }
 
-  public keyDownEvent(t0: number) {
-    this.ons.forEach((on, i) => {
-      on.frequency.setTargetAtTime(this.freq[i], t0, this.onC[i]);
-      this.gn.gain.setTargetAtTime(1, t0, this.onC[i]);
-    });
+  public keyDownEvent(k: string, t0: number) {
+    if (k === this.keys[0]) {
+      this.ons.forEach((on, i) => {
+        on.frequency.setTargetAtTime(this.freq[i], t0, this.onC[i]);
+        this.gn.gain.setTargetAtTime(1, t0, this.onC[i]);
+      });
+    }
   }
 
-  public keyUpEvent(t0: number) {
-    this.ons.forEach((on, i) => {
-      on.frequency.setTargetAtTime(0, t0, this.offC[i]);
-      this.gn.gain.setTargetAtTime(0, t0, this.offC[i]);
-    });
+  public keyUpEvent(k: string, t0: number) {
+    if (k === this.keys[0]) {
+      this.ons.forEach((on, i) => {
+        on.frequency.setTargetAtTime(0, t0, this.offC[i]);
+        this.gn.gain.setTargetAtTime(0, t0, this.offC[i]);
+      });
+    }
   }
 
   public playSheet(
@@ -97,11 +101,10 @@ const pewpew: GameSound = new GameSound(
   new Array(3).fill(0.0015),
   new Array(3).fill(0.15),
   [642, 642 * 2, 642 / 2],
-  fireKey
+  [fireKey]
 ); // tslint:enable:no-magic-numbers
 
 // Play a Laser (l) sound while pressing a key (k)
 export function fireLaser() {
-  const t0: number = audioContext.currentTime;
-  oncePerPress(pewpew, t0);
+  oncePerPress(pewpew, audioContext.currentTime);
 }
