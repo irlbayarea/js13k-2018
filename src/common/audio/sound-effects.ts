@@ -1,8 +1,8 @@
-import { IPressed, whilePressed } from '../input/input';
+import { IOncePerPress, oncePerPress } from '../input/input';
 import { audioContext } from './theme';
 
 export const fireKey: string = 'P';
-export class SoundEffect implements IPressed {
+export class SoundEffect implements IOncePerPress {
   public readonly on: OscillatorNode = audioContext.createOscillator();
   public readonly wn: WaveShaperNode = audioContext.createWaveShaper();
   public readonly gn: GainNode = audioContext.createGain();
@@ -45,7 +45,7 @@ const powpow: SoundEffect = new SoundEffect('sawtooth', pewpew.f / 2);
 export function fireLaser() {
   // Pew Pew!
   const t0: number = audioContext.currentTime;
-  whilePressed(pewpew, t0);
-  whilePressed(powpow, t0);
-  whilePressed(pippip, t0);
+  oncePerPress(pewpew, t0);
+  oncePerPress(powpow, t0);
+  oncePerPress(pippip, t0);
 }
