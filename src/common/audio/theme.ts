@@ -1,5 +1,5 @@
 import { state } from './../../index';
-import { Instrument } from './game-sound';
+import { Instrument } from './instrument';
 import { Sheet, shift, str2Sheet } from './music';
 
 const ms2s = 1000; // Milliseconds to Seconds
