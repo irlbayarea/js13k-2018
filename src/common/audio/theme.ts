@@ -1,4 +1,4 @@
-import { GameSound } from './gamesound';
+import { GameSound } from './game-sound';
 import { Sheet, shift, str2Sheet } from './music';
 
 const ms2s = 1000; // Milliseconds to Seconds
@@ -28,16 +28,12 @@ export class SongHandler {
   }
 }
 
-const str00: string = `
-0: B ,4,e | D,5,e | A,5,e | G#,5,e | E ,5,e | F#,5,e | D ,5,e | F#,5,e | B ,4,e | D,5,e | A,5,e | G#,5,e | E ,5,e | F#,5,e | D ,5,e | F#,5,e 
-0: A ,4,e | C,5,e | G,5,e | F#,5,e | D ,5,e | E ,5,e | C ,5,e | E ,5,e | A ,4,e | C,5,e | G,5,e | F#,5,e | D ,5,e | E ,5,e | C ,5,e | E ,5,e
-`;
-
+const str001: string = `0: B ,4,e | D ,5,e | A ,5,e | G#,5,e | E ,5,e | F#,5,e | D ,5,e | F#,5,e`;
+const str002: string = `0: A ,4,e | C ,5,e | G ,5,e | F#,5,e | D ,5,e | E ,5,e | C ,5,e | E ,5,e`;
 const str10: string = `
 0: A ,3,qd| B ,3,qd| E ,3,q | A ,3,qd| B ,3,qd| E ,3,q
 0: G ,3,qd| A ,3,qd| E ,3,q | G ,3,qd| A ,3,qd| A ,3,e | B ,3, e
 `;
-
 const str11: string = `
 0: A ,3,q | A ,3,e | B ,3,q | B ,3,e |E ,3,q | A ,3,q | A ,3,e | B ,3,q | B ,3,e |E ,3,q
 0: G ,3,q | G ,3,e | A ,3,q | A ,3,e |E ,3,q | G ,3,q | G ,3,e | A ,3,q | A ,3,e |A ,3,e | B ,3, e
@@ -45,29 +41,33 @@ const str11: string = `
 
 const tempo: number = 160;
 
-const sht00: Sheet = str2Sheet(str00, tempo);
+const sht001: Sheet = str2Sheet(str001, tempo);
+const sht002: Sheet = str2Sheet(str002, tempo);
 const sht10: Sheet = str2Sheet(str10, tempo);
 const sht11: Sheet = str2Sheet(str11, tempo);
 
-const ins0: GameSound = new GameSound('sawtooth', sht00.nreg());
-const ins1: GameSound = new GameSound('square', sht10.nreg());
-const ins2: GameSound = new GameSound('sine', sht10.nreg());
+const ins0: GameSound = new GameSound('square', sht001.nreg());
+const ins1: GameSound = new GameSound('sawtooth', sht10.nreg());
+const ins2: GameSound = new GameSound('square', sht10.nreg());
 
 // tslint:disable:no-magic-numbers
 export const gameMusic: SongHandler = new SongHandler(
   [ins0, ins1, ins2],
   [
     // Sheet , volume set , octave shift , staccato set
-    shift(sht00, 0.5, +0, 0.5), // 0 - LEAD
-    shift(sht00, 0.5, -1, 0.7), // 1 - LEAD
-    shift(sht10, 0.3, +0, 0.1), // 2 - RHYTHM
-    shift(sht11, 0.3, +1, 0.1), // 3 - RHYTHM
-    shift(sht10, 0.3, +1, 0.1), // 4 - RHYTHM
+    shift(sht001, 0.5, +0, 0.5), // 0 - LEAD A
+    shift(sht002, 0.5, +0, 0.5), // 1 - LEAD B
+    shift(sht001, 0.5, -1, 0.5), // 2 - LEAD A
+    shift(sht002, 0.5, -1, 0.5), // 3 - LEAD B
+
+    shift(sht10, 0.3, +0, 0.1), //  4- RHYTHM
+    shift(sht11, 0.3, +1, 0.1), //  5- RHYTHM
+    shift(sht10, 0.3, +1, 0.1), //  6- RHYTHM
   ],
   {
-    0: [0, 1, 0, 1],
-    1: [2, 3, 3, 4],
-    2: [4, 2, 1, 0],
+    0: [0, 0, 1, 1, 2, 2, 3, 3, 0, 0, 1, 1, 2, 2, 3, 3],
+    1: [4, 5, 5, 4],
+    2: [6, 4, 4, 5],
   }
 ); // tslint:enable:no-magic-numbers
 
@@ -76,18 +76,26 @@ export function play(time: number): void {
     gameMusic.isPlaying = true;
     gameMusic.startTime = time;
 
-    let dt: number = 0;
+    // Relative start time for each successive Sheet
+    let st: number = 0;
 
+    // For each GameSound...
     Object.keys(gameMusic.parts).forEach((insID: string) => {
+      let pid: number;
+      // For each Sheet to be played by this GameSound...
       gameMusic.parts[+insID].forEach((shtID: number, i: number) => {
+        // If first sheet, assume that starts right away
         if (i === 0) {
-          dt = 0;
+          st = 0;
+          // For successive sheets, start after previous sheet finished
         } else {
-          dt += gameMusic.shts[i - 1].duration();
+          st += gameMusic.shts[pid].duration();
         }
+        pid = shtID;
+
         gameMusic.ins[+insID].playSheet(
           gameMusic.shts[+shtID],
-          dt,
+          st,
           gameMusic.startTime / ms2s
         );
       });

@@ -1,7 +1,8 @@
 import { Sheet } from './music';
-import { audioContext } from './themesong';
+import { audioContext } from './theme';
 import { Note } from './theory';
 
+// const decayConst: number = 0.001;
 export class GameSound {
   private readonly ons: OscillatorNode[] = [];
   private readonly gn: GainNode = audioContext.createGain();
@@ -11,7 +12,7 @@ export class GameSound {
     private nreg: number = 1
   ) {
     // Start out muted (so we don't kill everyone's ears)
-    this.gn.gain.value = 0;
+    this.gn.gain.setValueAtTime(0, 0);
     // Set number of registers required for this sheet music by this song
     this.register(nreg);
   }
@@ -35,11 +36,14 @@ export class GameSound {
         // Set frequency
         const f = nj.freq();
         const b = nj.duration(sm.tempo);
+        // tslint:disable-next-line:no-magic-numbers
         this.ons[i].frequency.setValueAtTime(f <= 0 ? 0 : f, t[i]);
-        this.gn.gain.setValueAtTime(f <= 0 ? 0 : nj.vol, t[i]);
+        // tslint:disable-next-line:no-magic-numbers
+        this.gn.gain.exponentialRampToValueAtTime(f <= 0 ? 1e-3 : nj.vol, t[i]); // , decayConst);
 
         // Advance time and set oscillator frequency to zero
         t[i] += b;
+        // tslint:disable-next-line:no-magic-numbers
         this.ons[i].frequency.setValueAtTime(0, t[i] - b * nj.sPct);
       });
     });

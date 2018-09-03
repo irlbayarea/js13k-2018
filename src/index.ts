@@ -1,5 +1,5 @@
-import { makesomenoise } from './common/audio/soundeffects';
-import { play } from './common/audio/themesong';
+import { makeSomeNoise } from './common/audio/sound-effects';
+import { play } from './common/audio/theme';
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
 import { Vec2 } from './common/math/vec2';
@@ -42,5 +42,5 @@ const world = new World();
 // Start the game driver.
 timer.subscribe(renderFrames);
 timer.subscribe(play);
-timer.subscribe(makesomenoise);
+timer.subscribe(makeSomeNoise);
 window.requestAnimationFrame(timer.update);
