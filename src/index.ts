@@ -1,5 +1,5 @@
 import { fireKey, fireLaser } from './common/audio/sound-effects';
-import { playMusic } from './common/audio/theme';
+import { musicStartKey, musicStopKey, playMusic } from './common/audio/theme';
 import { Draw } from './common/graphics/draw';
 import { Input } from './common/input/input';
 import { Vec2 } from './common/math/vec2';
@@ -33,6 +33,18 @@ function renderFrames(time: number) {
     `Press ${fireKey} to fire your laser!`,
     // tslint:disable-next-line:no-magic-numbers
     new Vec2(state.draw.canvas.width - 150, state.draw.canvas.height - 20)
+  );
+
+  state.draw.text(
+    `Press ${musicStopKey} to stop music!`,
+    // tslint:disable-next-line:no-magic-numbers
+    new Vec2(state.draw.canvas.width - 150, state.draw.canvas.height - 40)
+  );
+
+  state.draw.text(
+    `Press ${musicStartKey} to play music!`,
+    // tslint:disable-next-line:no-magic-numbers
+    new Vec2(state.draw.canvas.width - 150, state.draw.canvas.height - 60)
   );
 
   world.update(time / aSecondInMs);

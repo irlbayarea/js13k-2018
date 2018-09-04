@@ -66,21 +66,23 @@ class InputEvent {
  Interface for implementing objects with events that should only happen while a button is pressed
 */
 export interface IOncePerPress {
-  keyDown: boolean;
-  key: string;
-  keyDownEvent(t0: number): void;
-  keyUpEvent(t0: number): void;
+  keysDown: { [k: string]: boolean };
+  keys: string[];
+  keyDownEvent(k: string, t0: number): void;
+  keyUpEvent(k: string, t0: number): void;
 }
 
 /*
 * Function for executing events that should happen only once per button press
 */
 export function oncePerPress(l: IOncePerPress, t0: number) {
-  if (state.input.isPressed(l.key) && !l.keyDown) {
-    l.keyDown = true;
-    l.keyDownEvent(t0);
-  } else if (!state.input.isPressed(l.key) && l.keyDown) {
-    l.keyDown = false;
-    l.keyUpEvent(t0);
-  }
+  l.keys.forEach((k: string, _) => {
+    if (state.input.isPressed(k) && !l.keysDown[k]) {
+      l.keysDown[k] = true;
+      l.keyDownEvent(k, t0);
+    } else if (!state.input.isPressed(k) && l.keysDown[k]) {
+      l.keysDown[k] = false;
+      l.keyUpEvent(k, t0);
+    }
+  });
 }

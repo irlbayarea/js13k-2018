@@ -1,8 +1,11 @@
 import { state } from './../../index';
+import { audioContext } from './audio';
 import { Sheet, shift, str2Sheet } from './music';
 import { GameSound } from './sound-effects';
+import { MILLISEC_TO_SEC } from './theory';
 
-const ms2s = 1000; // Milliseconds to Seconds
+export const musicStartKey = 'M';
+export const musicStopKey = 'N';
 
 // Holds information necessary to direct a song
 export class Conductor {
@@ -10,9 +13,9 @@ export class Conductor {
     public readonly ins: { [gsID: number]: GameSound },
     public readonly shts: { [shtID: number]: Sheet },
     public readonly parts: { [gsID: number]: number[] },
+    public loops: boolean = true,
     public startTime: number = 0,
-    public isPlaying: boolean = false,
-    public loops: boolean = true
+    public isPlaying: boolean = false
   ) {}
 
   public dur(): number {
@@ -26,6 +29,58 @@ export class Conductor {
     });
 
     return maxdur;
+  }
+  public play(time: number) {
+    if (!this.isPlaying) {
+      this.isPlaying = true;
+      this.startTime = time;
+
+      // Relative start time for each successive Sheet
+      let st: number = 0;
+
+      // For each GameSound...
+      Object.keys(this.parts).forEach((insID: string) => {
+        let pid: number;
+        // For each Sheet to be played by this GameSound...
+        this.parts[+insID].forEach((shtID: number, i: number) => {
+          // If first sheet, assume that starts right away
+          if (i === 0) {
+            st = 0;
+            // For successive sheets, start after previous sheet finished
+          } else {
+            st += this.shts[pid].duration();
+          }
+          pid = shtID;
+
+          this.ins[+insID].playSheet(
+            this.shts[+shtID],
+            st,
+            this.startTime / MILLISEC_TO_SEC
+          );
+        });
+      });
+
+      Object.keys(this.ins).forEach((ini: string, _) => {
+        this.ins[+ini].play();
+      });
+    }
+
+    if (time >= this.startTime + this.dur() * MILLISEC_TO_SEC) {
+      this.isPlaying = false;
+      if (this.loops) {
+        this.startTime = time;
+        this.play(time);
+      }
+    }
+  }
+
+  public stop(t0: number) {
+    if (this.isPlaying) {
+      this.isPlaying = false;
+      Object.keys(this.ins).forEach((ini: string, _) => {
+        this.ins[+ini].stop(t0);
+      });
+    }
   }
 }
 
@@ -90,54 +145,21 @@ const themeSong: Conductor = new Conductor(
     8: shift(sht002, 0.125, +1, 0.5, -2), // LEAD B2
   },
   {
-    0: [7, 7, 8, 8, 2, 2, 3, 3, 7, 7, 1, 1, 2, 2, 3, 3],
-    1: [4, 5, 5, 4],
-    2: [6, 4, 4, 5],
-  }
+    0: [7, 7, 8, 8], // , 2, 2, 3, 3, 7, 7, 1, 1, 2, 2, 3, 3],
+    1: [4], // , 5, 5, 4],
+    2: [6], // , 4, 4, 5],
+  },
+  true // loops
 ); // tslint:enable:no-magic-numbers
 
-export function playMusic(time: number): void {
-  if (state.input.isPressed('M') || themeSong.loops) {
-    play(themeSong, time);
+export function playMusic(t0: number): void {
+  if (
+    (themeSong.isPlaying && themeSong.loops) ||
+    state.input.isPressed(musicStartKey)
+  ) {
+    themeSong.play(t0);
   }
-}
-
-function play(music: Conductor, time: number) {
-  if (!music.isPlaying) {
-    music.isPlaying = true;
-    music.startTime = time;
-
-    // Relative start time for each successive Sheet
-    let st: number = 0;
-
-    // For each GameSound...
-    Object.keys(music.parts).forEach((insID: string) => {
-      let pid: number;
-      // For each Sheet to be played by this GameSound...
-      music.parts[+insID].forEach((shtID: number, i: number) => {
-        // If first sheet, assume that starts right away
-        if (i === 0) {
-          st = 0;
-          // For successive sheets, start after previous sheet finished
-        } else {
-          st += music.shts[pid].duration();
-        }
-        pid = shtID;
-
-        music.ins[+insID].playSheet(
-          music.shts[+shtID],
-          st,
-          music.startTime / ms2s
-        );
-      });
-    });
-
-    Object.keys(music.ins).forEach((ini: string, _) => {
-      music.ins[+ini].play();
-    });
-  } else if (music.loops && time >= music.startTime + music.dur() * ms2s) {
-    music.startTime = time;
-    music.isPlaying = false;
-    play(music, time);
+  if (state.input.isPressed(musicStopKey)) {
+    themeSong.stop(audioContext.currentTime + 0.001); // tslint:disable-line:no-magic-numbers
   }
 }
