@@ -1,41 +1,58 @@
+import { Vec2 } from '../../common/math/vec2';
 import { CircleCollidable } from './collidable';
 
-class CollisionGroup {
-  public readonly collidables: CircleCollidable[];
-
-  constructor() {
-    this.collidables = [];
-  }
-}
-
-class Projectile {
-  constructor(public readonly circleCollidable: CircleCollidable) {}
-}
-
 export class Physics {
-  private readonly groups: Map<string, CollisionGroup>;
-  private readonly interactions: Map<string, Set<string>>;
-
-  constructor() {
-    this.groups = new Map();
-    this.interactions = new Map();
+  private static interact(a: Body, b: Body) {
+    const pa = a.physicsAttributes;
+    const pb = b.physicsAttributes;
+    if (pa.damageSupplier !== undefined && pb.damageConsumer !== undefined) {
+      pa.damageSupplier!.damageYou(pb.damageConsumer);
+    }
   }
 
-  // public addGroup(name: string) {}
+  private readonly bodies: Body[] = [];
 
-  // public addInteraction(fromGroup: string, toGroup: string) {}
+  public update() {
+    this.handleCollisions();
+  }
 
-  // public update() {}
+  public addBody(body: Body) {
+    this.bodies.push(body);
+  }
 
-  // private processCollisions() {}
+  private handleCollisions() {
+    this.bodies.forEach(a =>
+      this.bodies.forEach(b => {
+        if (a !== b) {
+          const ca = a.circleCollidable;
+          const cb = b.circleCollidable;
+          let l2 = ca.radius + cb.radius;
+          l2 *= l2;
+          if (Vec2.distanceSquared(ca.position, cb.position) <= l2) {
+            Physics.interact(a, b);
+          }
+        }
+      })
+    );
+  }
 }
 
-// notes
-// collision between group A and group B.
-// e.g. players and bullets
-// groups must have a particular type and a way of getting the associated
-// object of that type from the collidable entity on collision.
+class Body {
+  constructor(
+    public readonly circleCollidable: CircleCollidable,
+    public readonly physicsAttributes: IPhysicsAttributes
+  ) {}
+}
 
-// have specific groups like bullet group, and its targets. the targets
-// will provide a handler for the group. The group will require objects of
-// type e.g. bullet
+export interface IPhysicsAttributes {
+  damageConsumer?: IDamageConsumer;
+  damageSupplier?: IDamageSupplier;
+}
+
+export interface IDamageConsumer {
+  damageMe: (amount: number) => void;
+}
+
+export interface IDamageSupplier {
+  damageYou: (damageConsumer: IDamageConsumer) => void;
+}
