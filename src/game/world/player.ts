@@ -7,10 +7,11 @@ import { state } from '../../index';
 import { Entity } from './entity';
 
 export class Player {
+  public static readonly playerWidth = 32;
   public readonly entity: Entity;
+  public isDead = false;
 
   constructor() {
-    const playerWidth = 32;
     // TODO: disable this when the magic has been lost.
     // tslint:disable:no-magic-numbers
     const playerStartPosition = new Vec2(200, 200);
@@ -21,7 +22,7 @@ export class Player {
     this.entity = new Entity(
       playerStartPosition,
       Vec2.zero(),
-      new SpriteDrawable(playerSprite, playerWidth)
+      new SpriteDrawable(playerSprite, Player.playerWidth)
     );
   }
 
@@ -29,8 +30,16 @@ export class Player {
     this.controls();
   }
 
+  public die() {
+    this.isDead = true;
+  }
+
   private controls() {
     // The new velocity is based on user input.
+    if (this.isDead) {
+      return;
+    }
+
     const newVelocity = Vec2.zero();
     const { isPressed } = state.input;
     if (isPressed('A')) {

@@ -15,14 +15,18 @@ export class Vec2 {
    * Returns the distance between two vectors, treated as points.
    */
   public static distance(a: Vec2, b: Vec2): number {
-    return Math.sqrt(a.x * b.x + a.y * b.y);
+    const xd = a.x - b.x;
+    const yd = a.y - b.y;
+    return Math.sqrt(xd * xd + yd * yd);
   }
 
   /**
    * Returns the squared distance between two vectors, treated as points.
    */
   public static distanceSquared(a: Vec2, b: Vec2): number {
-    return a.x * b.x + a.y * b.y;
+    const xd = a.x - b.x;
+    const yd = a.y - b.y;
+    return xd * xd + yd * yd;
   }
 
   /**
