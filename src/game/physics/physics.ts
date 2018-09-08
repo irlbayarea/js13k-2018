@@ -26,9 +26,12 @@ export class Physics {
         if (a !== b) {
           const ca = a.circleCollidable;
           const cb = b.circleCollidable;
-          let l2 = ca.radius + cb.radius;
-          l2 *= l2;
-          if (Vec2.distanceSquared(ca.position, cb.position) <= l2) {
+          const radiiSum = ca.radius + cb.radius;
+          const minDistSq = radiiSum * radiiSum;
+          // console.log(Vec2.distanceSquared(ca.position, cb.position));
+          // console.log(cb.position);
+          if (Vec2.distanceSquared(ca.position, cb.position) <= minDistSq) {
+            // console.log(ca, cb);
             Physics.interact(a, b);
           }
         }
@@ -37,7 +40,7 @@ export class Physics {
   }
 }
 
-class Body {
+export class Body {
   constructor(
     public readonly circleCollidable: CircleCollidable,
     public readonly physicsAttributes: IPhysicsAttributes

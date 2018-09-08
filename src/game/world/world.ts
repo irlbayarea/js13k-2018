@@ -6,6 +6,8 @@ import { Sprite } from '../../common/graphics/sprites';
 import { Rectangle } from '../../common/math/math';
 import { Vec2 } from '../../common/math/vec2';
 import { state } from '../../index';
+import { CircleCollidable } from '../physics/collidable';
+import { Body, IPhysicsAttributes, Physics } from '../physics/physics';
 import { Entity } from './entity';
 import { Player } from './player';
 
@@ -57,6 +59,8 @@ export class World {
    */
   private updateTimePool = 0;
 
+  private readonly physics = new Physics();
+
   public constructor() {
     this.entities = [];
     this.player = new Player();
@@ -78,6 +82,44 @@ export class World {
     this.entities.push(randoEntityMaker(new Vec2(360, 460)));
     this.entities.push(randoEntityMaker(new Vec2(100, 250)));
     this.entities.push(randoEntityMaker(new Vec2(500, 150)));
+
+    // Physics test
+    // First set up bullet entity w/ physics
+    const bulletEntity = new Entity(
+      new Vec2(400, 150),
+      Vec2.zero(),
+      new CircleDrawable(5, 'black')
+    );
+    this.entities.push(bulletEntity);
+    const bulletPhysicsAttributes: IPhysicsAttributes = {
+      damageSupplier: {
+        damageYou: damageConsumer => {
+          damageConsumer.damageMe(1);
+        },
+      },
+    };
+    this.physics.addBody(
+      new Body(
+        new CircleCollidable(bulletEntity.position, 5),
+        bulletPhysicsAttributes
+      )
+    );
+    // Now set up player physics
+    const playerPhysicsAttributes: IPhysicsAttributes = {
+      damageConsumer: {
+        damageMe: amount => {
+          if (amount >= 1) {
+            this.player.die();
+          }
+        },
+      },
+    };
+    this.physics.addBody(
+      new Body(
+        new CircleCollidable(this.player.entity.position, Player.playerWidth),
+        playerPhysicsAttributes
+      )
+    );
 
     const testSprite = new Sprite(
       spriteSheet,
@@ -138,6 +180,7 @@ export class World {
     this.entities.forEach(entity => {
       entity.update();
     });
+    this.physics.update();
   }
 
   /**
