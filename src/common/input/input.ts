@@ -15,10 +15,13 @@ import { state } from './../../index';
 export class Input {
   private readonly pressedKeys: Set<string>;
   private eventBuffer: InputEvent[];
+  // Map from keys to functions that handle the input event.
+  private readonly keyEventHandlers: Map<string, (down: boolean) => void>;
 
   constructor() {
     this.eventBuffer = [];
     this.pressedKeys = new Set();
+    this.keyEventHandlers = new Map();
     window.addEventListener('keydown', event =>
       this.onKeyEvent(new InputEvent(event.key.toUpperCase(), true))
     );
@@ -42,11 +45,47 @@ export class Input {
   public readonly isPressed = (...keys: string[]): boolean =>
     keys.every(key => this.pressedKeys.has(key));
 
+  // Registers a function to be called when the given key is pressed (down).
+  public readonly registerKeyDownHandler = (
+    key: string,
+    handler: () => void
+  ) => {
+    this.registerKeyToggleHandler(key, down => {
+      if (down) {
+        handler();
+      }
+    });
+  };
+
+  // Registers a function to be called when the given key is released (up).
+  public readonly registerKeyUpHandler = (key: string, handler: () => void) => {
+    this.registerKeyToggleHandler(key, down => {
+      if (!down) {
+        handler();
+      }
+    });
+  };
+
+  // Registers a function to be called when the given key is pressed or
+  // released. The registered function takes a boolean indicating if the key has
+  // changed state to down (true) or up (false).
+  public readonly registerKeyToggleHandler = (
+    key: string,
+    handler: (down: boolean) => void
+  ) => {
+    this.keyEventHandlers.set(key.toUpperCase(), handler);
+  };
+
   private readonly processEvent = (inputEvent: InputEvent) => {
     if (inputEvent.down) {
       this.pressedKeys.add(inputEvent.key);
     } else {
       this.pressedKeys.delete(inputEvent.key);
+    }
+    if (this.keyEventHandlers.has(inputEvent.key)) {
+      // Get the handler and call it with the key state.
+      const handler = this.keyEventHandlers.get(inputEvent.key)!;
+      handler(inputEvent.down);
     }
   };
 
