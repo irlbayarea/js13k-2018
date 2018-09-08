@@ -21,6 +21,8 @@ export class Physics {
   }
 
   private handleCollisions() {
+    // This is O(n^2). Should be fine for now but this is the first place to
+    // look if we get performance issues.
     this.bodies.forEach(a =>
       this.bodies.forEach(b => {
         if (a !== b) {
@@ -28,10 +30,7 @@ export class Physics {
           const cb = b.circleCollidable;
           const radiiSum = ca.radius + cb.radius;
           const minDistSq = radiiSum * radiiSum;
-          // console.log(Vec2.distanceSquared(ca.position, cb.position));
-          // console.log(cb.position);
           if (Vec2.distanceSquared(ca.position, cb.position) <= minDistSq) {
-            // console.log(ca, cb);
             Physics.interact(a, b);
           }
         }
