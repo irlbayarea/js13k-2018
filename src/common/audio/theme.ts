@@ -2,7 +2,6 @@ import { state } from './../../index';
 import { audioContext } from './audio';
 import { Sheet, shift, str2Sheet } from './music';
 import { GameSound } from './sound-effects';
-import { MILLISEC_TO_SEC } from './theory';
 
 export const musicStartKey = 'M';
 export const musicStopKey = 'N';
@@ -52,11 +51,7 @@ export class Conductor {
           }
           pid = shtID;
 
-          this.ins[+insID].playSheet(
-            this.shts[+shtID],
-            st,
-            this.startTime / MILLISEC_TO_SEC
-          );
+          this.ins[+insID].playSheet(this.shts[+shtID], st, this.startTime);
         });
       });
 
@@ -65,7 +60,7 @@ export class Conductor {
       });
     }
 
-    if (time >= this.startTime + this.dur() * MILLISEC_TO_SEC) {
+    if (time >= this.startTime + this.dur()) {
       this.isPlaying = false;
       if (this.loops) {
         this.startTime = time;
@@ -145,14 +140,15 @@ const themeSong: Conductor = new Conductor(
     8: shift(sht002, 0.125, +1, 0.5, -2), // LEAD B2
   },
   {
-    0: [7, 7, 8, 8], // , 2, 2, 3, 3, 7, 7, 1, 1, 2, 2, 3, 3],
-    1: [4], // , 5, 5, 4],
-    2: [6], // , 4, 4, 5],
+    0: [7, 7, 8, 8, 2, 2, 3, 3, 7, 7, 1, 1, 2, 2, 3, 3],
+    1: [4, 5, 5, 4],
+    2: [6, 4, 4, 5],
   },
   true // loops
 ); // tslint:enable:no-magic-numbers
 
-export function playMusic(t0: number): void {
+export function playMusic(): void {
+  const t0: number = audioContext.currentTime;
   if (
     (themeSong.isPlaying && themeSong.loops) ||
     state.input.isPressed(musicStartKey)
@@ -160,6 +156,6 @@ export function playMusic(t0: number): void {
     themeSong.play(t0);
   }
   if (state.input.isPressed(musicStopKey)) {
-    themeSong.stop(audioContext.currentTime + 0.001); // tslint:disable-line:no-magic-numbers
+    themeSong.stop(t0); // tslint:disable-line:no-magic-numbers
   }
 }
