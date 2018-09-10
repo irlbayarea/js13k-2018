@@ -59,5 +59,5 @@ const world = new World();
 // Start the game driver.
 timer.subscribe(renderFrames);
 timer.subscribe(playMusic);
-timer.subscribe(fireLaser);
+state.input.registerKeyDownHandler(fireKey, fireLaser);
 window.requestAnimationFrame(timer.update);

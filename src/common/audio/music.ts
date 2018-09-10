@@ -1,9 +1,11 @@
-import { Note, REST } from './theory';
+import { BEATS_PER_MEASURE, Note, REST, SEC_PER_MIN } from './theory';
 
 export class Sheet {
   constructor(
     public readonly tempo: number = 120,
-    public readonly registers: { [id: number]: Note[] }
+    public readonly registers: { [id: number]: Note[] },
+    private readonly gainC: number = 2 ** -12, // tslint:disable-line:no-magic-numbers
+    private readonly freqC: number = 2 ** -12 // tslint:disable-line:no-magic-numbers
   ) {}
 
   public nreg(): number {
@@ -28,6 +30,16 @@ export class Sheet {
       });
     });
     return maxdur;
+  }
+
+  public gainConst(): number {
+    // tslint:disable-next-line:no-magic-numbers
+    return (SEC_PER_MIN / this.tempo) * this.gainC * BEATS_PER_MEASURE;
+  }
+
+  public freqConst(): number {
+    // tslint:disable-next-line:no-magic-numbers
+    return (SEC_PER_MIN / this.tempo) * this.freqC * BEATS_PER_MEASURE;
   }
 }
 
