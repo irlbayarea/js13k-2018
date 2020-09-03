@@ -39,7 +39,7 @@
     "imagemin-optipng": "^5.2.1",
     "prettier": "^1.14.0",
     "prettier-check": "^2.0.0",
-    "puppeteer": "^1.7.0",
+    "puppeteer": "^1.13.0",
     "rimraf": "^2.6.2",
     "terser-webpack-plugin": "^1.0.0",
     "ts-loader": "^4.4.2",
